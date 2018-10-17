@@ -4,8 +4,8 @@ import (
 	"log"
 	"net"
 
-	"github.com/henrylee2cn/teleport/socket"
-	"github.com/henrylee2cn/teleport/socket/example/pb"
+	"github.com/jslyzt/teleport/socket"
+	"github.com/jslyzt/teleport/socket/example/pb"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 			log.Fatalf("[SVR] accept err: %v", err)
 		}
 		go func(s socket.Socket) {
-			log.Printf("accept %s", s.Id())
+			log.Printf("accept %s", s.ID())
 			defer s.Close()
 			var pbTest = new(pb.PbTest)
 			for {

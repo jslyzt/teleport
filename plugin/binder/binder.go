@@ -26,7 +26,7 @@ import (
 	"strings"
 
 	"github.com/henrylee2cn/goutil"
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 /**

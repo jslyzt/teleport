@@ -25,9 +25,9 @@ import (
 	"sync"
 
 	"github.com/henrylee2cn/goutil"
-	"github.com/henrylee2cn/teleport/codec"
-	"github.com/henrylee2cn/teleport/utils"
-	"github.com/henrylee2cn/teleport/xfer"
+	"github.com/jslyzt/teleport/codec"
+	"github.com/jslyzt/teleport/utils"
+	"github.com/jslyzt/teleport/xfer"
 )
 
 type (
@@ -79,16 +79,16 @@ type (
 		Mtype() byte
 		// Mtype sets the message type
 		SetMtype(byte)
-		// Uri returns the URI string
-		Uri() string
-		// UriObject returns the URI object
-		UriObject() *url.URL
-		// SetUri sets the message URI
+		// URI returns the URI string
+		URI() string
+		// URIObject returns the URI object
+		URIObject() *url.URL
+		// SetURI sets the message URI
 		// NOTE: max len ≤ 65535!
-		SetUri(string)
-		// SetUriObject sets the message URI
+		SetURI(string)
+		// SetURIObject sets the message URI
 		// NOTE: urlencoded URI max len ≤ 65535!
-		SetUriObject(uriObject *url.URL)
+		SetURIObject(uriObject *url.URL)
 		// Meta returns the metadata
 		// NOTE: urlencoded string max len ≤ 65535!
 		Meta() *utils.Args
@@ -226,16 +226,16 @@ func (m *Message) SetMtype(mtype byte) {
 	m.mtype = mtype
 }
 
-// Uri returns the URI string
-func (m *Message) Uri() string {
+// URI returns the URI string
+func (m *Message) URI() string {
 	if m.uriObject != nil {
 		return m.uriObject.String()
 	}
 	return m.uri
 }
 
-// UriObject returns the URI object
-func (m *Message) UriObject() *url.URL {
+// URIObject returns the URI object
+func (m *Message) URIObject() *url.URL {
 	if m.uriObject == nil {
 		m.uriObject, _ = url.Parse(m.uri)
 		if m.uriObject == nil {
@@ -246,16 +246,16 @@ func (m *Message) UriObject() *url.URL {
 	return m.uriObject
 }
 
-// SetUri sets the message URI
+// SetURI sets the message URI
 // NOTE: max len ≤ 65535!
-func (m *Message) SetUri(uri string) {
+func (m *Message) SetURI(uri string) {
 	m.uri = uri
 	m.uriObject = nil
 }
 
-// SetUriObject sets the message URI
+// SetURIObject sets the message URI
 // NOTE: urlencoded URI max len ≤ 65535!
-func (m *Message) SetUriObject(uriObject *url.URL) {
+func (m *Message) SetURIObject(uriObject *url.URL) {
 	m.uriObject = uriObject
 	m.uri = ""
 }
@@ -427,19 +427,19 @@ func WithMtype(mtype byte) MessageSetting {
 	}
 }
 
-// WithUri sets the message URI string.
+// WithURI sets the message URI string.
 // NOTE: max len ≤ 65535!
-func WithUri(uri string) MessageSetting {
+func WithURI(uri string) MessageSetting {
 	return func(m *Message) {
-		m.SetUri(uri)
+		m.SetURI(uri)
 	}
 }
 
-// WithUriObject sets the message URI object.
+// WithURIObject sets the message URI object.
 // NOTE: urlencoded URI max len ≤ 65535!
-func WithUriObject(uriObject *url.URL) MessageSetting {
+func WithURIObject(uriObject *url.URL) MessageSetting {
 	return func(m *Message) {
-		m.SetUriObject(uriObject)
+		m.SetURIObject(uriObject)
 	}
 }
 
@@ -447,7 +447,7 @@ func WithUriObject(uriObject *url.URL) MessageSetting {
 // NOTE: urlencoded URI max len ≤ 65535!
 func WithQuery(key, value string) MessageSetting {
 	return func(m *Message) {
-		u := m.UriObject()
+		u := m.URIObject()
 		v := u.Query()
 		v.Add(key, value)
 		u.RawQuery = v.Encode()

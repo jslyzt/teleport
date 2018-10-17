@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 func main() {
@@ -58,6 +58,6 @@ type Push struct {
 
 // Test handler
 func (p *Push) Test(arg *[]byte) *tp.Rerror {
-	tp.Infof("receive push(%s):\narg: %s\nquery: %#v\n", p.Ip(), *arg, p.Query())
+	tp.Infof("receive push(%s):\narg: %s\nquery: %#v\n", p.IP(), *arg, p.Query())
 	return nil
 }

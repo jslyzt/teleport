@@ -11,7 +11,7 @@ func TestMessageString(t *testing.T) {
 	m.SetMtype(3)
 	m.SetSize(300)
 	m.SetBody(map[string]int{"a": 1})
-	m.SetUri("uri/b")
+	m.SetURI("uri/b")
 	m.SetBodyCodec(5)
 	m.Meta().Set("key", "value")
 	t.Logf("%%s:%s", m.String())

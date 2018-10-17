@@ -21,7 +21,7 @@ import (
 	"sync"
 
 	"github.com/henrylee2cn/goutil"
-	"github.com/henrylee2cn/teleport/utils"
+	"github.com/jslyzt/teleport/utils"
 )
 
 type (
@@ -161,7 +161,7 @@ func (r *rawProto) writeHeader(bb *utils.ByteBuffer, m *Message) error {
 
 	bb.WriteByte(m.Mtype())
 
-	uriBytes := goutil.StringToBytes(m.Uri())
+	uriBytes := goutil.StringToBytes(m.URI())
 	binary.Write(bb, binary.BigEndian, uint16(len(uriBytes)))
 	bb.Write(uriBytes)
 
@@ -261,7 +261,7 @@ func (r *rawProto) readHeader(data []byte, m *Message) []byte {
 	// uri
 	uriLen := binary.BigEndian.Uint16(data)
 	data = data[2:]
-	m.SetUri(string(data[:uriLen]))
+	m.SetURI(string(data[:uriLen]))
 	data = data[uriLen:]
 	// meta
 	metaLen := binary.BigEndian.Uint16(data)

@@ -21,10 +21,10 @@ import (
 	"io"
 	"sync"
 
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/codec"
-	"github.com/henrylee2cn/teleport/proto/pbproto/pb"
-	"github.com/henrylee2cn/teleport/utils"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/codec"
+	"github.com/jslyzt/teleport/proto/pbproto/pb"
+	"github.com/jslyzt/teleport/utils"
 )
 
 // NewPbProtoFunc is creation function of PROTOBUF socket protocol.
@@ -60,7 +60,7 @@ func (pp *pbproto) Pack(m *tp.Message) error {
 	b, err := codec.ProtoMarshal(&pb.Payload{
 		Seq:       m.Seq(),
 		Mtype:     int32(m.Mtype()),
-		Uri:       m.Uri(),
+		URI:       m.URI(),
 		Meta:      m.Meta().QueryString(),
 		BodyCodec: int32(m.BodyCodec()),
 		Body:      bodyBytes,
@@ -139,7 +139,7 @@ func (pp *pbproto) Unpack(m *tp.Message) error {
 	// read other
 	m.SetSeq(s.Seq)
 	m.SetMtype(byte(s.Mtype))
-	m.SetUri(s.Uri)
+	m.SetURI(s.URI)
 	m.Meta().ParseBytes(s.Meta)
 
 	// read body

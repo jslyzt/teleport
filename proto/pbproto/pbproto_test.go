@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/proto/pbproto"
-	"github.com/henrylee2cn/teleport/xfer/gzip"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/proto/pbproto"
+	"github.com/jslyzt/teleport/xfer/gzip"
 )
 
 type Home struct {
@@ -61,6 +61,6 @@ type Push struct {
 }
 
 func (p *Push) Test(arg *map[string]interface{}) *tp.Rerror {
-	tp.Infof("receive push(%s):\narg: %#v\n", p.Ip(), arg)
+	tp.Infof("receive push(%s):\narg: %#v\n", p.IP(), arg)
 	return nil
 }

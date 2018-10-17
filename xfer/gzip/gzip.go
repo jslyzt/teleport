@@ -21,8 +21,8 @@ import (
 	"io/ioutil"
 	"sync"
 
-	"github.com/henrylee2cn/teleport/utils"
-	"github.com/henrylee2cn/teleport/xfer"
+	"github.com/jslyzt/teleport/utils"
+	"github.com/jslyzt/teleport/xfer"
 )
 
 // Reg registers a gzip filter for transfer.

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 func main() {
@@ -25,7 +25,7 @@ func main() {
 	if rerr != nil {
 		tp.Fatalf("%v", rerr)
 	}
-	sess.SetId("testId")
+	sess.SetID("testId")
 
 	var result interface{}
 	for {

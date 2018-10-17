@@ -4,9 +4,9 @@ import (
 	"testing"
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/xfer"
-	"github.com/henrylee2cn/teleport/xfer/md5"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/xfer"
+	"github.com/jslyzt/teleport/xfer/md5"
 )
 
 func TestSeparate(t *testing.T) {

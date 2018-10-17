@@ -21,8 +21,8 @@ import (
 	"net/url"
 
 	"github.com/henrylee2cn/goutil"
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/utils"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/utils"
 )
 
 const (
@@ -157,7 +157,7 @@ func (e *encryptPlugin) PreWriteCall(ctx tp.WriteCtx) *tp.Rerror {
 	// query: perform encryption operation to the query parameters.
 	output := ctx.Output()
 	// if output.Mtype() != tp.TypeReply {
-	u := output.UriObject()
+	u := output.URIObject()
 	if len(u.RawQuery) > 0 {
 		ciphertext := goutil.AESEncrypt(e.cipherkey, goutil.StringToBytes(u.RawQuery))
 		v := make(url.Values, 0)
@@ -228,10 +228,10 @@ func (e *decryptPlugin) PreReadCallBody(ctx tp.ReadCtx) *tp.Rerror {
 	q := ctx.Query()
 	q.Del(CIPHERVERSION_KEY)
 	q.Del(CIPHERTEXT_KEY)
-	ctx.UriObject().RawQuery = goutil.BytesToString(queryBytes)
+	ctx.URIObject().RawQuery = goutil.BytesToString(queryBytes)
 	last := q.Encode()
 	if len(last) > 0 {
-		ctx.UriObject().RawQuery += "&" + last
+		ctx.URIObject().RawQuery += "&" + last
 	}
 	return nil
 }

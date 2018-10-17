@@ -1,50 +1,49 @@
-# Teleport [![GitHub release](https://img.shields.io/github/release/henrylee2cn/teleport.svg?style=flat-square)](https://github.com/henrylee2cn/teleport/releases) [![report card](https://goreportcard.com/badge/github.com/henrylee2cn/teleport?style=flat-square)](http://goreportcard.com/report/henrylee2cn/teleport) [![github issues](https://img.shields.io/github/issues/henrylee2cn/teleport.svg?style=flat-square)](https://github.com/henrylee2cn/teleport/issues?q=is%3Aopen+is%3Aissue) [![github closed issues](https://img.shields.io/github/issues-closed-raw/henrylee2cn/teleport.svg?style=flat-square)](https://github.com/henrylee2cn/teleport/issues?q=is%3Aissue+is%3Aclosed) [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](http://godoc.org/github.com/henrylee2cn/teleport) [![view examples](https://img.shields.io/badge/learn%20by-examples-00BCD4.svg?style=flat-square)](https://github.com/henrylee2cn/teleport/tree/v4/examples)
+# Teleport [![GitHub release](https://img.shields.io/github/release/henrylee2cn/teleport.svg?style=flat-square)](https://github.com/jslyzt/teleport/releases) [![report card](https://goreportcard.com/badge/github.com/jslyzt/teleport?style=flat-square)](http://goreportcard.com/report/henrylee2cn/teleport) [![github issues](https://img.shields.io/github/issues/henrylee2cn/teleport.svg?style=flat-square)](https://github.com/jslyzt/teleport/issues?q=is%3Aopen+is%3Aissue) [![github closed issues](https://img.shields.io/github/issues-closed-raw/henrylee2cn/teleport.svg?style=flat-square)](https://github.com/jslyzt/teleport/issues?q=is%3Aissue+is%3Aclosed) [![GoDoc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](http://godoc.org/github.com/jslyzt/teleport) [![view examples](https://img.shields.io/badge/learn%20by-examples-00BCD4.svg?style=flat-square)](https://github.com/jslyzt/teleport/tree/v4/examples)
 <!-- [![view Go网络编程群](https://img.shields.io/badge/官方QQ群-Go网络编程(42730308)-27a5ea.svg?style=flat-square)](http://jq.qq.com/?_wv=1027&k=fzi4p1) -->
 
-Teleport is a versatile, high-performance and flexible socket framework.
 
-It can be used for peer-peer, rpc, gateway, micro services, push services, game services and so on.
+Teleport是一个通用、高效、灵活的Socket框架。
 
-[简体中文](https://github.com/henrylee2cn/teleport/tree/v4/README_ZH.md)
-
-
-![Teleport-Framework](https://github.com/henrylee2cn/teleport/raw/v4/doc/teleport_module_diagram.png)
+可用于Peer-Peer对等通信、RPC、长连接网关、微服务、推送服务，游戏服务等领域。
 
 
-## Benchmark
+![Teleport-Framework](https://github.com/jslyzt/teleport/raw/v4/doc/teleport_module_diagram.png)
 
-**Self Test**
 
-- A server and a client process, running on the same machine
+## 性能测试
+
+**自测**
+
+- 一个服务端与一个客户端进程，在同一台机器上运行
 - CPU:    Intel Xeon E312xx (Sandy Bridge) 16 cores 2.53GHz
 - Memory: 16G
 - OS:     Linux 2.6.32-696.16.1.el6.centos.plus.x86_64, CentOS 6.4
 - Go:     1.9.2
-- Message size: 581 bytes
-- Message codec: protobuf
-- Sent total 1000000 messages
+- 信息大小: 581 bytes
+- 信息编码：protobuf
+- 发送 1000000 条信息
 
 - teleport
 
-| client concurrency | mean(ms) | median(ms) | max(ms) | min(ms) | throughput(TPS) |
-| ------------------ | -------- | ---------- | ------- | ------- | --------------- |
-| 100                | 1        | 0          | 16      | 0       | 75505           |
-| 500                | 9        | 11         | 97      | 0       | 52192           |
-| 1000               | 19       | 24         | 187     | 0       | 50040           |
-| 2000               | 39       | 54         | 409     | 0       | 42551           |
-| 5000               | 96       | 128        | 1148    | 0       | 46367           |
+| 并发client | 平均值(ms) | 中位数(ms) | 最大值(ms) | 最小值(ms) | 吞吐率(TPS) |
+| -------- | ------- | ------- | ------- | ------- | -------- |
+| 100      | 1       | 0       | 16      | 0       | 75505    |
+| 500      | 9       | 11      | 97      | 0       | 52192    |
+| 1000     | 19      | 24      | 187     | 0       | 50040    |
+| 2000     | 39      | 54      | 409     | 0       | 42551    |
+| 5000     | 96      | 128     | 1148    | 0       | 46367    |
 
 - teleport/socket
 
-| client concurrency | mean(ms) | median(ms) | max(ms) | min(ms) | throughput(TPS) |
-| ------------------ | -------- | ---------- | ------- | ------- | --------------- |
-| 100                | 0        | 0          | 14      | 0       | 225682          |
-| 500                | 2        | 1          | 24      | 0       | 212630          |
-| 1000               | 4        | 3          | 51      | 0       | 180733          |
-| 2000               | 8        | 6          | 64      | 0       | 183351          |
-| 5000               | 21       | 18         | 651     | 0       | 133886          |
+| 并发client | 平均值(ms) | 中位数(ms) | 最大值(ms) | 最小值(ms) | 吞吐率(TPS) |
+| -------- | ------- | ------- | ------- | ------- | -------- |
+| 100      | 0       | 0       | 14      | 0       | 225682   |
+| 500      | 2       | 1       | 24      | 0       | 212630   |
+| 1000     | 4       | 3       | 51      | 0       | 180733   |
+| 2000     | 8       | 6       | 64      | 0       | 183351   |
+| 5000     | 21      | 18      | 651     | 0       | 133886   |
 
-**Comparison Test**
+**对比测试**
 
 <table>
 <tr><th>Environment</th><th>Throughputs</th><th>Mean Latency</th><th>P99 Latency</th></tr>
@@ -58,56 +57,56 @@ It can be used for peer-peer, rpc, gateway, micro services, push services, game 
 
 **[More Detail](https://github.com/henrylee2cn/rpc-benchmark)**
 
-- Profile torch of teleport/socket
+- CPU耗时火焰图 teleport/socket
 
-![tp_socket_profile_torch](https://github.com/henrylee2cn/teleport/raw/v4/doc/tp_socket_profile_torch.png)
+![tp_socket_profile_torch](https://github.com/jslyzt/teleport/raw/v4/doc/tp_socket_profile_torch.png)
 
-**[svg file](https://github.com/henrylee2cn/teleport/raw/v4/doc/tp_socket_profile_torch.svg)**
+**[svg file](https://github.com/jslyzt/teleport/raw/v4/doc/tp_socket_profile_torch.svg)**
 
-- Heap torch of teleport/socket
+- 堆栈信息火焰图 teleport/socket
 
-![tp_socket_heap_torch](https://github.com/henrylee2cn/teleport/raw/v4/doc/tp_socket_heap_torch.png)
+![tp_socket_heap_torch](https://github.com/jslyzt/teleport/raw/v4/doc/tp_socket_heap_torch.png)
 
-**[svg file](https://github.com/henrylee2cn/teleport/raw/v4/doc/tp_socket_heap_torch.svg)**
-
-## Version
-
-| version | status  | branch                                   |
-| ------- | ------- | ---------------------------------------- |
-| v4      | release | [v4](https://github.com/henrylee2cn/teleport/tree/v4) |
-| v3      | release | [v3](https://github.com/henrylee2cn/teleport/tree/v3) |
-| v2      | release | [v2](https://github.com/henrylee2cn/teleport/tree/v2) |
-| v1      | release | [v1](https://github.com/henrylee2cn/teleport/tree/v1) |
+**[svg file](https://github.com/jslyzt/teleport/raw/v4/doc/tp_socket_heap_torch.svg)**
 
 
-## Install
+## 版本
+
+| 版本   | 状态      | 分支                                       |
+| ---- | ------- | ---------------------------------------- |
+| v4      | release | [v4](https://github.com/jslyzt/teleport/tree/v4) |
+| v3      | release | [v3](https://github.com/jslyzt/teleport/tree/v3) |
+| v2      | release | [v2](https://github.com/jslyzt/teleport/tree/v2) |
+| v1      | release | [v1](https://github.com/jslyzt/teleport/tree/v1) |
+
+## 安装
 
 ```sh
-go get -u -f github.com/henrylee2cn/teleport
+go get -u -f github.com/jslyzt/teleport
 ```
 
-## Feature
+## 特性
 
-- Server and client are peer-to-peer, have the same API method
-- Support custom communication protocol
-- Support set the size of socket I/O buffer
-- Message contains both `Header` and `Body` two parts
-- Message `Header` contains metadata in the same format as HTTP header
-- Support for customizing `Body` coding types separately, e.g `JSON` `Protobuf` `string`
-- Support push, call, reply and other means of communication
-- Support plug-in mechanism, can customize authentication, heartbeat, micro service registration center, statistics, etc.
-- Whether server or client, the peer support reboot and shutdown gracefully
-- Support reverse proxy
-- Detailed log information, support print input and output details
-- Supports setting slow operation alarm threshold
-- Use I/O multiplexing technology
-- Support setting the size of the reading message (if exceed disconnect it)
-- Provide the context of the handler
-- Client session support automatically redials after disconnection
-- Support network list: `tcp`, `tcp4`, `tcp6`, `unix`, `unixpacket` and so on
-- Provide an operating interface to control the connection file descriptor
+- 服务器和客户端之间对等通信，两者API方法基本一致
+- 支持定制通信协议
+- 可设置底层套接字读写缓冲区的大小
+- 底层通信数据包包含`Header`和`Body`两部分
+- 数据包`Header`包含与HTTP header相同格式的元信息
+- 支持单独定制`Body`编码类型，例如`JSON` `Protobuf` `string`
+- 支持推、拉、回复等通信方法
+- 支持插件机制，可以自定义认证、心跳、微服务注册中心、统计信息插件等
+- 无论服务器或客户端，均支持优雅重启、优雅关闭
+- 支持实现反向代理功能
+- 日志信息详尽，支持打印输入、输出报文的详细信息（状态码、头信息、正文）
+- 支持设置慢操作报警阈值
+- 端点间通信使用I/O多路复用技术
+- 支持设置读取包的大小限制（如果超出则断开连接）
+- 提供Handler的上下文
+- 客户端的Session支持断线后自动重连
+- 支持的网络类型：`tcp`、`tcp4`、`tcp6`、`unix`、`unixpacket`等
+- 提供对连接文件描述符（fd）的操作接口
 
-## Example
+## 代码示例
 
 ### server.go
 
@@ -118,7 +117,7 @@ import (
 	"fmt"
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 func main() {
@@ -180,7 +179,7 @@ package main
 import (
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 func main() {
@@ -223,38 +222,40 @@ func (p *Push) Status(arg *string) *tp.Rerror {
 }
 ```
 
-[More Examples](https://github.com/henrylee2cn/teleport/tree/v4/examples)
-
-## Design
-
-### Keywords
-
-- **Peer:** A communication instance may be a server or a client
-- **Socket:** Base on the net.Conn package, add custom package protocol, transfer pipelines and other functions
-- **Message:** The corresponding structure of the data package content element
-- **Proto:** The protocol interface of message pack/unpack 
-- **Codec:** Serialization interface for `Message.Body`
-- **XferPipe:** Message bytes encoding pipeline, such as compression, encryption, calibration and so on
-- **XferFilter:** A interface to handle message data before transfer
-- **Plugin:** Plugins that cover all aspects of communication
-- **Session:** A connection session, with push, call, reply, close and other methods of operation
-- **Context:** Handle the received or send messages
-- **Call-Launch:** Call data from the peer
-- **Call-Handle:** Handle and reply to the calling of peer
-- **Push-Launch:** Push data to the peer
-- **Push-Handle:** Handle the pushing of peer
-- **Router:** Router that route the response handler by request information(such as a URI)
-
-### Data Message
-
-Abstracts the data message(Message Object) of the application layer and is compatible with HTTP message:
-
-![tp_data_message](https://github.com/henrylee2cn/teleport/raw/v4/doc/tp_data_message.png)
+[更多示例](https://github.com/jslyzt/teleport/blob/master/examples)
 
 
-### Protocol
+## 框架设计
 
-You can customize your own communication protocol by implementing the interface:
+### 名称解释
+
+- **Peer：** 通信端点，可以是服务端或客户端
+- **Socket：** 对net.Conn的封装，增加自定义包协议、传输管道等功能
+- **Message：** 数据包内容元素对应的结构体
+- **Proto：** 数据包封包／解包的协议接口
+- **Codec：** 用于`Message.Body`的序列化工具
+- **XferPipe：** 数据包字节流的编码处理管道，如压缩、加密、校验等
+- **XferFilter：** 一个在数据包传输前，对数据进行加工的接口
+- **Plugin：** 贯穿于通信各个环节的插件
+- **Session：** 基于Socket封装的连接会话，提供的推、拉、回复、关闭等会话操作
+- **Context：** 连接会话中一次通信（如PULL-REPLY, PUSH）的上下文对象
+- **Call-Launch：** 从对端Peer拉数据
+- **Call-Handle：** 处理和回复对端Peer的拉请求
+- **Push-Launch：** 将数据推送到对端Peer
+- **Push-Handle：** 处理同伴的推送
+- **Router：** 通过请求信息（如URI）索引响应函数（Handler）的路由器
+
+
+### 数据报文
+
+抽象应用层的数据报文（Message 对象）并与 HTTP 报文兼容：
+
+![tp_data_message](https://github.com/jslyzt/teleport/raw/v4/doc/tp_data_message.png)
+
+
+### 通信协议
+
+支持通过接口定制自己的通信协议：
 
 ```go
 type (
@@ -273,7 +274,8 @@ type (
 )
 ```
 
-Next, you can specify the communication protocol in the following ways:
+
+接着，你可以使用以下任意方式指定自己的通信协议：
 
 ```go
 func SetDefaultProtoFunc(ProtoFunc)
@@ -287,7 +289,7 @@ type Peer interface {
 }
 ```
 
-Default protocol `RawProto`(Big Endian):
+默认的协议`RawProto`(Big Endian)：
 
 ```sh
 {4 bytes message length}
@@ -297,7 +299,7 @@ Default protocol `RawProto`(Big Endian):
 # The following is handled data by transfer pipe
 {2 bytes sequence length}
 {sequence}
-{1 byte message type} # e.g. CALL:1; REPLY:2; PUSH:3
+{1 byte message type} // e.g. PULL:1; REPLY:2; PUSH:3
 {2 bytes URI length}
 {URI}
 {2 bytes metadata length}
@@ -307,10 +309,9 @@ Default protocol `RawProto`(Big Endian):
 ```
 
 
-### XferPipe
+### 过滤管道
 
-Transfer filter pipe, handles byte stream of message when transfer.
-
+传输数据的过滤管道。
 ```go
 // XferFilter handles byte stream of message when transfer.
 type XferFilter interface {
@@ -346,9 +347,9 @@ func (x *XferPipe) Reset()
 ```
 
 
-### Codec
+### 编解码器
 
-The body's codec set.
+数据包中Body内容的编解码器。
 
 ```go
 type Codec interface {
@@ -365,9 +366,9 @@ type Codec interface {
 ```
 
 
-### Plugin
+### 插件
 
-Plug-ins during runtime.
+运行过程中以挂载方式执行的插件。
 
 ```go
 type (
@@ -385,9 +386,9 @@ type (
 ```
 
 
-## Usage
+## 用法
 
-### Peer(server or client) Demo
+### Peer端点（服务端或客户端）示例
 
 ```go
 // Start a server
@@ -403,7 +404,8 @@ var peer2 = tp.NewPeer(tp.PeerConfig{})
 var sess, err = peer2.Dial("127.0.0.1:8080")
 ```
 
-### Call-Controller-Struct API template
+
+### Call-Controller-Struct 接口模板
 
 ```go
 type Aaa struct {
@@ -415,17 +417,17 @@ func (x *Aaa) XxZz(arg *<T>) (<T>, *tp.Rerror) {
 }
 ```
 
-- register it to root router:
+- 注册到根路由：
 
 ```go
-// register the call route: /aaa/xx_zz
+// register the pull route: /aaa/xx_zz
 peer.RouteCall(new(Aaa))
 
-// or register the call route: /xx_zz
+// or register the pull route: /xx_zz
 peer.RouteCallFunc((*Aaa).XxZz)
 ```
 
-### Call-Handler-Function API template
+### Call-Handler-Function 接口模板
 
 ```go
 func XxZz(ctx tp.CallCtx, arg *<T>) (<T>, *tp.Rerror) {
@@ -434,14 +436,14 @@ func XxZz(ctx tp.CallCtx, arg *<T>) (<T>, *tp.Rerror) {
 }
 ```
 
-- register it to root router:
+- 注册到根路由：
 
 ```go
-// register the call route: /xx_zz
+// register the pull route: /xx_zz
 peer.RouteCallFunc(XxZz)
 ```
 
-### Push-Controller-Struct API template
+### Push-Controller-Struct 接口模板
 
 ```go
 type Bbb struct {
@@ -453,7 +455,7 @@ func (b *Bbb) YyZz(arg *<T>) *tp.Rerror {
 }
 ```
 
-- register it to root router:
+- 注册到根路由：
 
 ```go
 // register the push route: /bbb/yy_zz
@@ -463,7 +465,7 @@ peer.RoutePush(new(Bbb))
 peer.RoutePushFunc((*Bbb).YyZz)
 ```
 
-### Push-Handler-Function API template
+### Push-Handler-Function 接口模板
 
 ```go
 // YyZz register the route: /yy_zz
@@ -473,14 +475,14 @@ func YyZz(ctx tp.PushCtx, arg *<T>) *tp.Rerror {
 }
 ```
 
-- register it to root router:
+- 注册到根路由：
 
 ```go
 // register the push route: /yy_zz
 peer.RoutePushFunc(YyZz)
 ```
 
-### Unknown-Call-Handler-Function API template
+### Unknown-Call-Handler-Function 接口模板
 
 ```go
 func XxxUnknownCall (ctx tp.UnknownCallCtx) (interface{}, *tp.Rerror) {
@@ -489,14 +491,14 @@ func XxxUnknownCall (ctx tp.UnknownCallCtx) (interface{}, *tp.Rerror) {
 }
 ```
 
-- register it to root router:
+- 注册到根路由：
 
 ```go
-// register the unknown call route: /*
+// register the unknown pull route: /*
 peer.SetUnknownCall(XxxUnknownCall)
 ```
 
-### Unknown-Push-Handler-Function API template
+### Unknown-Push-Handler-Function 接口模板
 
 ```go
 func XxxUnknownPush(ctx tp.UnknownPushCtx) *tp.Rerror {
@@ -505,14 +507,14 @@ func XxxUnknownPush(ctx tp.UnknownPushCtx) *tp.Rerror {
 }
 ```
 
-- register it to root router:
+- 注册到根路由：
 
 ```go
 // register the unknown push route: /*
 peer.SetUnknownPush(XxxUnknownPush)
 ```
 
-### The mapping rule of struct(func) name to URI path:
+### 结构体（函数）名称映射到URI路径的规则：
 
 - `AaBb` -> `/aa_bb`
 - `Aa_Bb` -> `/aa/bb`
@@ -523,7 +525,7 @@ peer.SetUnknownPush(XxxUnknownPush)
 - `ABcXYz` -> `/abc_xyz`
 - `ABC__XYZ` -> `/abc_xyz`
 
-### Plugin Demo
+### 插件示例
 
 ```go
 // NewIgnoreCase Returns a ignoreCase plugin.
@@ -544,18 +546,18 @@ func (i *ignoreCase) Name() string {
 
 func (i *ignoreCase) PostReadCallHeader(ctx tp.ReadCtx) *tp.Rerror {
     // Dynamic transformation path is lowercase
-    ctx.UriObject().Path = strings.ToLower(ctx.UriObject().Path)
+    ctx.URIObject().Path = strings.ToLower(ctx.URIObject().Path)
     return nil
 }
 
 func (i *ignoreCase) PostReadPushHeader(ctx tp.ReadCtx) *tp.Rerror {
     // Dynamic transformation path is lowercase
-    ctx.UriObject().Path = strings.ToLower(ctx.UriObject().Path)
+    ctx.URIObject().Path = strings.ToLower(ctx.URIObject().Path)
     return nil
 }
 ```
 
-### Register above handler and plugin
+### 注册以上操作和插件示例到路由
 
 ```go
 // add router group
@@ -569,7 +571,7 @@ peer.SetUnknownCall(XxxUnknownCall)
 peer.SetUnknownPush(XxxUnknownPush)
 ```
 
-### Config
+### 配置信息
 
 ```go
 type PeerConfig struct {
@@ -580,111 +582,105 @@ type PeerConfig struct {
     RedialTimes        int32         `yaml:"redial_times"         ini:"redial_times"         comment:"The maximum times of attempts to redial, after the connection has been unexpectedly broken; for client role"`
     DefaultBodyCodec   string        `yaml:"default_body_codec"   ini:"default_body_codec"   comment:"Default body codec type id"`
     DefaultSessionAge  time.Duration `yaml:"default_session_age"  ini:"default_session_age"  comment:"Default session max age, if less than or equal to 0, no time limit; ns,µs,ms,s,m,h"`
-    DefaultContextAge  time.Duration `yaml:"default_context_age"  ini:"default_context_age"  comment:"Default CALL or PUSH context max age, if less than or equal to 0, no time limit; ns,µs,ms,s,m,h"`
+    DefaultContextAge  time.Duration `yaml:"default_context_age"  ini:"default_context_age"  comment:"Default PULL or PUSH context max age, if less than or equal to 0, no time limit; ns,µs,ms,s,m,h"`
     SlowCometDuration  time.Duration `yaml:"slow_comet_duration"  ini:"slow_comet_duration"  comment:"Slow operation alarm threshold; ns,µs,ms,s ..."`
     PrintDetail        bool          `yaml:"print_detail"         ini:"print_detail"         comment:"Is print body and metadata or not"`
     CountTime          bool          `yaml:"count_time"           ini:"count_time"           comment:"Is count cost time or not"`
 }
 ```
 
-### Optimize
+### 通信优化
 
-- SetMessageSizeLimit sets max message size.
-  If maxSize<=0, set it to max uint32.
+- SetMessageSizeLimit 设置报文大小的上限，
+  如果 maxSize<=0，上限默认为最大 uint32
 
     ```go
     func SetMessageSizeLimit(maxMessageSize uint32)
     ```
 
-- SetSocketKeepAlive sets whether the operating system should send
-  keepalive messages on the connection.
+- SetSocketKeepAlive 是否允许操作系统的发送TCP的keepalive探测包
 
     ```go
     func SetSocketKeepAlive(keepalive bool)
     ```
 
-- SetSocketKeepAlivePeriod sets period between keep alives.
+
+- SetSocketKeepAlivePeriod 设置操作系统的TCP发送keepalive探测包的频度
 
     ```go
     func SetSocketKeepAlivePeriod(d time.Duration)
     ```
 
-- SetSocketNoDelay controls whether the operating system should delay
-  message transmission in hopes of sending fewer messages (Nagle's
-  algorithm).  The default is true (no delay), meaning that data is
-  sent as soon as possible after a Write.
+- SetSocketNoDelay 是否禁用Nagle算法，禁用后将不在合并较小数据包进行批量发送，默认为禁用
 
     ```go
     func SetSocketNoDelay(_noDelay bool)
     ```
 
-- SetSocketReadBuffer sets the size of the operating system's
-  receive buffer associated with the connection.
+- SetSocketReadBuffer 设置操作系统的TCP读缓存区的大小
 
     ```go
     func SetSocketReadBuffer(bytes int)
     ```
 
-- SetSocketWriteBuffer sets the size of the operating system's
-  transmit buffer associated with the connection.
+- SetSocketWriteBuffer 设置操作系统的TCP写缓存区的大小
 
     ```go
     func SetSocketWriteBuffer(bytes int)
     ```
 
 
-## Extensions
+## 扩展包
 
-### Codec
-
+### 编解码器
 | package                                  | import                                   | description                  |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------- |
-| [json](https://github.com/henrylee2cn/teleport/blob/v4/codec/json_codec.go) | `import "github.com/henrylee2cn/teleport/codec"` | JSON codec(teleport own)     |
-| [protobuf](https://github.com/henrylee2cn/teleport/blob/v4/codec/protobuf_codec.go) | `import "github.com/henrylee2cn/teleport/codec"` | Protobuf codec(teleport own) |
-| [plain](https://github.com/henrylee2cn/teleport/blob/v4/codec/plain_codec.go) | `import "github.com/henrylee2cn/teleport/codec"` | Plain text codec(teleport own)   |
-| [form](https://github.com/henrylee2cn/teleport/blob/v4/codec/form_codec.go) | `import "github.com/henrylee2cn/teleport/codec"` | Form(url encode) codec(teleport own)   |
+| [json](https://github.com/jslyzt/teleport/blob/v4/codec/json_codec.go) | `import "github.com/jslyzt/teleport/codec"` | JSON codec(teleport own)     |
+| [protobuf](https://github.com/jslyzt/teleport/blob/v4/codec/protobuf_codec.go) | `import "github.com/jslyzt/teleport/codec"` | Protobuf codec(teleport own) |
+| [plain](https://github.com/jslyzt/teleport/blob/v4/codec/plain_codec.go) | `import "github.com/jslyzt/teleport/codec"` | Plain text codec(teleport own)   |
+| [form](https://github.com/jslyzt/teleport/blob/v4/codec/form_codec.go) | `import "github.com/jslyzt/teleport/codec"` | Form(url encode) codec(teleport own)   |
 
-### Plugin
-
-| package                                  | import                                   | description                              |
-| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| [auth](https://github.com/henrylee2cn/teleport/tree/v4/plugin/auth) | `import "github.com/henrylee2cn/teleport/plugin/auth"` | A auth plugin for verifying peer at the first time |
-| [binder](https://github.com/henrylee2cn/teleport/tree/v4/plugin/binder) | `import binder "github.com/henrylee2cn/teleport/plugin/binder"` | Parameter Binding Verification for Struct Handler |
-| [heartbeat](https://github.com/henrylee2cn/teleport/tree/v4/plugin/heartbeat) | `import heartbeat "github.com/henrylee2cn/teleport/plugin/heartbeat"` | A generic timing heartbeat plugin        |
-| [proxy](https://github.com/henrylee2cn/teleport/tree/v4/plugin/proxy) | `import "github.com/henrylee2cn/teleport/plugin/proxy"` | A proxy plugin for handling unknown calling or pushing |
-[secure](https://github.com/henrylee2cn/teleport/tree/v4/plugin/secure)|`import secure "github.com/henrylee2cn/teleport/plugin/secure"`|Encrypting/decrypting the message body
-
-### Protocol
+### 插件
 
 | package                                  | import                                   | description                              |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| [rawproto](https://github.com/henrylee2cn/teleport/tree/v4/proto/rawproto) | `import "github.com/henrylee2cn/teleport/proto/rawproto` | A fast socket communication protocol(teleport default protocol) |
-| [jsonproto](https://github.com/henrylee2cn/teleport/tree/v4/proto/jsonproto) | `import "github.com/henrylee2cn/teleport/proto/jsonproto"` | A JSON socket communication protocol     |
-| [pbproto](https://github.com/henrylee2cn/teleport/tree/v4/proto/pbproto) | `import "github.com/henrylee2cn/teleport/proto/pbproto"` | A Protobuf socket communication protocol     |
+| [auth](https://github.com/jslyzt/teleport/tree/v4/plugin/auth) | `import "github.com/jslyzt/teleport/plugin/auth"` | A auth plugin for verifying peer at the first time |
+| [binder](https://github.com/jslyzt/teleport/tree/v4/plugin/binder) | `import binder "github.com/jslyzt/teleport/plugin/binder"` | Parameter Binding Verification for Struct Handler |
+| [heartbeat](https://github.com/jslyzt/teleport/tree/v4/plugin/heartbeat) | `import heartbeat "github.com/jslyzt/teleport/plugin/heartbeat"` | A generic timing heartbeat plugin        |
+| [proxy](https://github.com/jslyzt/teleport/tree/v4/plugin/proxy) | `import "github.com/jslyzt/teleport/plugin/proxy"` | A proxy plugin for handling unknown calling or pushing |
+[secure](https://github.com/jslyzt/teleport/tree/v4/plugin/secure)|`import secure "github.com/jslyzt/teleport/plugin/secure"`|Encrypting/decrypting the message body
 
-### Transfer-Filter
-
-| package                                  | import                                   | description                              |
-| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| [gzip](https://github.com/henrylee2cn/teleport/tree/v4/xfer/gzip) | `import "github.com/henrylee2cn/teleport/xfer/gzip"` | Gzip(teleport own)                       |
-| [md5](https://github.com/henrylee2cn/teleport/tree/v4/xfer/md5) | `import "github.com/henrylee2cn/teleport/xfer/md5"` | Provides a integrity check transfer filter |
-
-### Mixer
+### 协议
 
 | package                                  | import                                   | description                              |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
-| [multiclient](https://github.com/henrylee2cn/teleport/tree/v4/mixer/multiclient) | `import "github.com/henrylee2cn/teleport/mixer/multiclient"` | Higher throughput client connection pool when transferring large messages (such as downloading files) |
-| [websocket](https://github.com/henrylee2cn/teleport/tree/v4/mixer/websocket) | `import "github.com/henrylee2cn/teleport/mixer/websocket"` | Makes the Teleport framework compatible with websocket protocol as specified in RFC 6455 |
+| [rawproto](https://github.com/jslyzt/teleport/tree/v4/proto/rawproto) | `import "github.com/jslyzt/teleport/proto/rawproto` | A fast socket communication protocol(teleport default protocol) |
+| [jsonproto](https://github.com/jslyzt/teleport/tree/v4/proto/jsonproto) | `import "github.com/jslyzt/teleport/proto/jsonproto"` | A JSON socket communication protocol     |
+| [pbproto](https://github.com/jslyzt/teleport/tree/v4/proto/pbproto) | `import "github.com/jslyzt/teleport/proto/pbproto"` | A Protobuf socket communication protocol     |
+
+### 传输过滤器
+
+| package                                  | import                                   | description                              |
+| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| [gzip](https://github.com/jslyzt/teleport/tree/v4/xfer/gzip) | `import "github.com/jslyzt/teleport/xfer/gzip"` | Gzip(teleport own)                       |
+| [md5](https://github.com/jslyzt/teleport/tree/v4/xfer/md5) | `import "github.com/jslyzt/teleport/xfer/md5"` | Provides a integrity check transfer filter |
+
+### 其他模块
+
+| package                                  | import                                   | description                              |
+| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| [multiclient](https://github.com/jslyzt/teleport/tree/v4/mixer/multiclient) | `import "github.com/jslyzt/teleport/mixer/multiclient"` | Higher throughput client connection pool when transferring large messages (such as downloading files) |
+| [websocket](https://github.com/jslyzt/teleport/tree/v4/mixer/websocket) | `import "github.com/jslyzt/teleport/mixer/websocket"` | Makes the Teleport framework compatible with websocket protocol as specified in RFC 6455 |
 | [html](https://github.com/xiaoenai/tp-micro/tree/master/helper/mod-html) | `html "github.com/xiaoenai/tp-micro/helper/mod-html"` | HTML render for http client |
 
-## Projects based on Teleport
+## 基于Teleport的项目
 
 | project                                  | description                              |
 | ---------------------------------------- | ---------------------------------------- |
-| [TP-Micro](https://github.com/xiaoenai/tp-micro) | TP-Micro is a simple, powerful micro service framework based on Teleport |
-| [Pholcus](https://github.com/henrylee2cn/pholcus) | Pholcus is a distributed, high concurrency and powerful web crawler software |
+| [TP-Micro](https://github.com/xiaoenai/tp-micro) | TP-Micro 是一个基于 Teleport 定制的、简约而强大的微服务框架          |
+| [Pholcus](https://github.com/henrylee2cn/pholcus) | Pholcus（幽灵蛛）是一款纯Go语言编写的支持分布式的高并发、重量级爬虫软件，定位于互联网数据采集，为具备一定Go或JS编程基础的人提供一个只需关注规则定制的功能强大的爬虫工具 |
 
-## Business Users
+## 企业用户
 
 <a href="http://www.xiaoenai.com"><img src="https://statics.xiaoenai.com/v4/img/logo_zh.png" height="50" alt="深圳市梦之舵信息技术有限公司"/></a>
 &nbsp;&nbsp;
@@ -694,6 +690,6 @@ type PeerConfig struct {
 &nbsp;&nbsp;
 <a href="http://www.kejishidai.cn"><img src="http://simg.ktvms.com/picture/logo.png" height="70" alt="北京可即时代网络公司"/></a>
 
-## License
+## 开源协议
 
-Teleport is under Apache v2 License. See the [LICENSE](https://github.com/henrylee2cn/teleport/raw/v4/LICENSE) file for the full license text
+Teleport 项目采用商业应用友好的 [Apache2.0](https://github.com/jslyzt/teleport/raw/v4/LICENSE) 协议发布

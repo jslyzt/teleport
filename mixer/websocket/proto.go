@@ -18,14 +18,14 @@ import (
 	"bytes"
 	"io"
 
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/mixer/websocket/jsonSubProto"
-	ws "github.com/henrylee2cn/teleport/mixer/websocket/websocket"
-	"github.com/henrylee2cn/teleport/socket"
-	"github.com/henrylee2cn/teleport/utils"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/mixer/websocket/jsonSubProto"
+	ws "github.com/jslyzt/teleport/mixer/websocket/websocket"
+	"github.com/jslyzt/teleport/socket"
+	"github.com/jslyzt/teleport/utils"
 )
 
-var defaultProto = jsonSubProto.NewJsonSubProtoFunc
+var defaultProto = jsonSubProto.NewJSONSubProtoFunc
 
 // NewWsProtoFunc wraps a protocol to a new websocket protocol.
 func NewWsProtoFunc(subProto ...tp.ProtoFunc) tp.ProtoFunc {
@@ -35,9 +35,8 @@ func NewWsProtoFunc(subProto ...tp.ProtoFunc) tp.ProtoFunc {
 			tp.Warnf("connection does not support websocket protocol")
 			if len(subProto) > 0 {
 				return subProto[0](rw)
-			} else {
-				return socket.DefaultProtoFunc()(rw)
 			}
+			return socket.DefaultProtoFunc()(rw)
 		}
 		subConn := newVirtualConn()
 		p := &wsProto{

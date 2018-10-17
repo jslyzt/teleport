@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 func main() {
@@ -36,10 +36,10 @@ func (h *Home) Test(arg *[]byte) ([]byte, *tp.Rerror) {
 func UnknownCallHandle(ctx tp.UnknownCallCtx) (interface{}, *tp.Rerror) {
 	ctx.Session().Push("/push/test?tag=from unknown", []byte("test unknown push text"))
 	var arg []byte
-	codecId, err := ctx.Bind(&arg)
+	codecID, err := ctx.Bind(&arg)
 	if err != nil {
 		return nil, tp.NewRerror(1001, "bind error", err.Error())
 	}
-	tp.Debugf("UnknownCallHandle: codec: %d, arg: %s", codecId, arg)
+	tp.Debugf("UnknownCallHandle: codec: %d, arg: %s", codecID, arg)
 	return []byte("test unknown call result text"), nil
 }

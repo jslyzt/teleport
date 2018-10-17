@@ -1,7 +1,7 @@
 package main
 
 import (
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 func main() {
@@ -49,6 +49,6 @@ func (c *ctrl) ServerStatus1(arg *string) *tp.Rerror {
 }
 
 func ServerStatus2(ctx tp.PushCtx, arg *string) *tp.Rerror {
-	tp.Printf("server status(%s): %s", ctx.Uri(), *arg)
+	tp.Printf("server status(%s): %s", ctx.URI(), *arg)
 	return nil
 }

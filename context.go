@@ -1,17 +1,3 @@
-// Copyright 2015-2018 HenryLee. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package tp
 
 import (
@@ -23,9 +9,9 @@ import (
 	"time"
 
 	"github.com/henrylee2cn/goutil"
-	"github.com/henrylee2cn/teleport/codec"
-	"github.com/henrylee2cn/teleport/socket"
-	"github.com/henrylee2cn/teleport/utils"
+	"github.com/jslyzt/teleport/codec"
+	"github.com/jslyzt/teleport/socket"
+	"github.com/jslyzt/teleport/utils"
 )
 
 type (
@@ -36,9 +22,9 @@ type (
 		// Session returns the session.
 		Session() Session
 		// Ip returns the remote addr.
-		Ip() string
+		IP() string
 		// RealIp returns the the current real remote addr.
-		RealIp() string
+		RealIP() string
 		// Swap returns custom data swap of context.
 		Swap() goutil.Map
 		// Context carries a deadline, a cancelation signal, and other values across
@@ -67,12 +53,12 @@ type (
 		VisitMeta(f func(key, value []byte))
 		// CopyMeta returns the input message metadata copy.
 		CopyMeta() *utils.Args
-		// Uri returns the input message uri.
-		Uri() string
-		// UriObject returns the input message uri object.
-		UriObject() *url.URL
-		// ResetUri resets the input message uri.
-		ResetUri(string)
+		// URI returns the input message uri.
+		URI() string
+		// URIObject returns the input message uri object.
+		URIObject() *url.URL
+		// ResetURI resets the input message uri.
+		ResetURI(string)
 		// Path returns the input message uri path.
 		Path() string
 		// Query returns the input message uri query object.
@@ -115,7 +101,7 @@ type (
 		// SetMeta sets the header metadata 'key=value' for reply message.
 		SetMeta(key, value string)
 		// AddXferPipe appends transfer filter pipe of reply message.
-		AddXferPipe(filterId ...byte)
+		AddXferPipe(filterID ...byte)
 	}
 	// UnknownPushCtx context method set for handling the unknown pushed message.
 	UnknownPushCtx interface {
@@ -144,7 +130,7 @@ type (
 		// SetMeta sets the header metadata 'key=value' for reply message.
 		SetMeta(key, value string)
 		// AddXferPipe appends transfer filter pipe of reply message.
-		AddXferPipe(filterId ...byte)
+		AddXferPipe(filterID ...byte)
 	}
 )
 
@@ -246,29 +232,29 @@ func (c *handlerCtx) Seq() string {
 	return c.input.Seq()
 }
 
-// Uri returns the input message uri string.
-func (c *handlerCtx) Uri() string {
-	return c.input.Uri()
+// URI returns the input message uri string.
+func (c *handlerCtx) URI() string {
+	return c.input.URI()
 }
 
-// UriObject returns the input message uri object.
-func (c *handlerCtx) UriObject() *url.URL {
-	return c.input.UriObject()
+// URIObject returns the input message uri object.
+func (c *handlerCtx) URIObject() *url.URL {
+	return c.input.URIObject()
 }
 
-// ResetUri resets the input message uri.
-func (c *handlerCtx) ResetUri(uri string) {
-	c.input.SetUri(uri)
+// ResetURI resets the input message uri.
+func (c *handlerCtx) ResetURI(uri string) {
+	c.input.SetURI(uri)
 }
 
 // Path returns the input message uri path.
 func (c *handlerCtx) Path() string {
-	return c.input.UriObject().Path
+	return c.input.URIObject().Path
 }
 
 // Query returns the input message uri query object.
 func (c *handlerCtx) Query() url.Values {
-	return c.input.UriObject().Query()
+	return c.input.URIObject().Query()
 }
 
 // PeekMeta peeks the header metadata for the input message.
@@ -313,20 +299,20 @@ func (c *handlerCtx) SetBodyCodec(bodyCodec byte) {
 }
 
 // AddXferPipe appends transfer filter pipe of reply message.
-func (c *handlerCtx) AddXferPipe(filterId ...byte) {
-	c.output.XferPipe().Append(filterId...)
+func (c *handlerCtx) AddXferPipe(filterID ...byte) {
+	c.output.XferPipe().Append(filterID...)
 }
 
-// Ip returns the remote addr.
-func (c *handlerCtx) Ip() string {
+// IP returns the remote addr.
+func (c *handlerCtx) IP() string {
 	return c.sess.RemoteAddr().String()
 }
 
-// RealIp returns the the current real remote addr.
-func (c *handlerCtx) RealIp() string {
-	realIp := c.PeekMeta(MetaRealIp)
-	if len(realIp) > 0 {
-		return string(realIp)
+// RealIP returns the the current real remote addr.
+func (c *handlerCtx) RealIP() string {
+	realIP := c.PeekMeta(MetaRealIP)
+	if len(realIP) > 0 {
+		return string(realIP)
 	}
 	return c.sess.RemoteAddr().String()
 }
@@ -390,7 +376,7 @@ func (c *handlerCtx) handle() {
 E:
 	// if unsupported, disconnected.
 	rerrCodeMtypeNotAllowed.SetToMeta(c.output.Meta())
-	Errorf(logFormatDisconnected, c.input.Mtype(), c.Ip(), c.input.Uri(), c.input.Seq(), messageLogBytes(c.input, c.sess.peer.printDetail))
+	Errorf(logFormatDisconnected, c.input.Mtype(), c.IP(), c.input.URI(), c.input.Seq(), messageLogBytes(c.input, c.sess.peer.printDetail))
 	go c.sess.Close()
 }
 
@@ -400,7 +386,7 @@ func (c *handlerCtx) bindPush(header Header) interface{} {
 		return nil
 	}
 
-	u := header.UriObject()
+	u := header.URIObject()
 	if len(u.Path) == 0 {
 		c.handleErr = rerrBadMessage.Copy().SetReason("invalid URI for message")
 		return nil
@@ -429,8 +415,11 @@ func (c *handlerCtx) bindPush(header Header) interface{} {
 // handlePush handles push.
 func (c *handlerCtx) handlePush() {
 	if age := c.sess.ContextAge(); age > 0 {
-		ctxTimout, _ := context.WithTimeout(context.Background(), age)
+		ctxTimout, cb := context.WithTimeout(context.Background(), age)
 		c.setContext(ctxTimout)
+		if cb != nil {
+			cb()
+		}
 	}
 
 	defer func() {
@@ -438,7 +427,7 @@ func (c *handlerCtx) handlePush() {
 			Debugf("panic:%v\n%s", p, goutil.PanicTrace(2))
 		}
 		c.cost = c.sess.timeSince(c.start)
-		c.sess.runlog(c.RealIp(), c.cost, c.input, nil, typePushHandle)
+		c.sess.runlog(c.RealIP(), c.cost, c.input, nil, typePushHandle)
 	}()
 
 	if c.handleErr == nil && c.handler != nil {
@@ -461,7 +450,7 @@ func (c *handlerCtx) bindCall(header Header) interface{} {
 		return nil
 	}
 
-	u := header.UriObject()
+	u := header.URIObject()
 	if len(u.Path) == 0 {
 		c.handleErr = rerrBadMessage.Copy().SetReason("invalid URI for message")
 		return nil
@@ -506,18 +495,21 @@ func (c *handlerCtx) handleCall() {
 			}
 		}
 		c.cost = c.sess.timeSince(c.start)
-		c.sess.runlog(c.RealIp(), c.cost, c.input, c.output, typeCallHandle)
+		c.sess.runlog(c.RealIP(), c.cost, c.input, c.output, typeCallHandle)
 	}()
 
 	c.output.SetMtype(TypeReply)
 	c.output.SetSeq(c.input.Seq())
-	c.output.SetUriObject(c.input.UriObject())
+	c.output.SetURIObject(c.input.URIObject())
 	c.output.XferPipe().AppendFrom(c.input.XferPipe())
 
 	if age := c.sess.ContextAge(); age > 0 {
-		ctxTimout, _ := context.WithTimeout(c.input.Context(), age)
+		ctxTimout, cb := context.WithTimeout(c.input.Context(), age)
 		c.setContext(ctxTimout)
 		socket.WithContext(ctxTimout)(c.output)
+		if cb != nil {
+			cb()
+		}
 	}
 
 	if c.handleErr == nil {
@@ -584,10 +576,10 @@ func (c *handlerCtx) writeReply(rerr *Rerror) *Rerror {
 		c.output.SetBody(nil)
 		c.output.SetBodyCodec(codec.NilCodecId)
 	}
-	uri := c.output.Uri()
-	c.output.SetUri("")
+	uri := c.output.URI()
+	c.output.SetURI("")
 	_, rerr = c.sess.write(c.output)
-	c.output.SetUri(uri)
+	c.output.SetURI(uri)
 	return rerr
 }
 
@@ -601,7 +593,7 @@ func (c *handlerCtx) bindReply(header Header) interface{} {
 
 	// unlock: handleReply
 	c.callCmd.mu.Lock()
-	c.input.SetUri(c.callCmd.output.Uri())
+	c.input.SetURI(c.callCmd.output.URI())
 	c.swap = c.callCmd.swap
 	c.callCmd.inputBodyCodec = c.GetBodyCodec()
 	// if c.callCmd.inputMeta!=nil, means the callCmd is replyed.
@@ -640,7 +632,7 @@ func (c *handlerCtx) handleReply() {
 		c.handleErr = c.callCmd.rerr
 		c.callCmd.done()
 		c.callCmd.cost = c.sess.timeSince(c.callCmd.start)
-		c.sess.runlog(c.RealIp(), c.callCmd.cost, c.input, c.callCmd.output, typeCallLaunch)
+		c.sess.runlog(c.RealIP(), c.callCmd.cost, c.input, c.callCmd.output, typeCallLaunch)
 	}()
 	if c.callCmd.rerr != nil {
 		return
@@ -756,16 +748,16 @@ func (c *callCmd) Session() Session {
 	return c.sess
 }
 
-// Ip returns the remote addr.
-func (c *callCmd) Ip() string {
+// IP returns the remote addr.
+func (c *callCmd) IP() string {
 	return c.sess.RemoteAddr().String()
 }
 
-// RealIp returns the the current real remote addr.
-func (c *callCmd) RealIp() string {
-	realIp := c.inputMeta.Peek(MetaRealIp)
-	if len(realIp) > 0 {
-		return string(realIp)
+// RealIP returns the the current real remote addr.
+func (c *callCmd) RealIP() string {
+	realIP := c.inputMeta.Peek(MetaRealIP)
+	if len(realIP) > 0 {
+		return string(realIP)
 	}
 	return c.sess.RemoteAddr().String()
 }

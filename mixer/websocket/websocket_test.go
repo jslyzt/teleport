@@ -5,10 +5,10 @@ import (
 	"testing"
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
-	ws "github.com/henrylee2cn/teleport/mixer/websocket"
-	"github.com/henrylee2cn/teleport/mixer/websocket/jsonSubProto"
-	"github.com/henrylee2cn/teleport/mixer/websocket/pbSubProto"
+	tp "github.com/jslyzt/teleport"
+	ws "github.com/jslyzt/teleport/mixer/websocket"
+	"github.com/jslyzt/teleport/mixer/websocket/jsonSubProto"
+	"github.com/jslyzt/teleport/mixer/websocket/pbSubProto"
 )
 
 type Arg struct {
@@ -24,13 +24,13 @@ func (p *P) Divide(arg *Arg) (int, *tp.Rerror) {
 
 func TestJsonSubWebsocket(t *testing.T) {
 	srv := tp.NewPeer(tp.PeerConfig{})
-	http.Handle("/ws", ws.NewJsonServeHandler(srv, nil))
+	http.Handle("/ws", ws.NewJSONServeHandler(srv, nil))
 	go http.ListenAndServe("0.0.0.0:9090", nil)
 	srv.RouteCall(new(P))
 	time.Sleep(time.Second * 1)
 
 	cli := tp.NewPeer(tp.PeerConfig{}, ws.NewDialPlugin("/ws"))
-	sess, err := cli.Dial("127.0.0.1:9090", jsonSubProto.NewJsonSubProtoFunc)
+	sess, err := cli.Dial("127.0.0.1:9090", jsonSubProto.NewJSONSubProtoFunc)
 	if err != nil {
 		t.Fatal(err)
 	}

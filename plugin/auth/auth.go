@@ -19,7 +19,7 @@ import (
 	"net"
 
 	"github.com/henrylee2cn/goutil"
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 // A auth plugin for verifying peer at the first time.
@@ -35,12 +35,12 @@ func VerifyAuth(fn VerifyAuthInfoFunc) tp.Plugin {
 }
 
 type (
-	// AuthSession auth session provides SetId, RemoteAddr and Swap methods in base session
-	AuthSession interface {
+	// Session auth session provides SetID, RemoteAddr and Swap methods in base session
+	Session interface {
 		// Peer returns the peer.
 		Peer() tp.Peer
-		// SetId sets the session id.
-		SetId(newId string)
+		// SetID sets the session id.
+		SetID(newID string)
 		// RemoteAddr returns the remote network address.
 		RemoteAddr() net.Addr
 		// Swap returns custom data swap of the session(socket).
@@ -49,7 +49,7 @@ type (
 	// GenerateAuthInfoFunc the function used to generate auth info
 	GenerateAuthInfoFunc func() string
 	// VerifyAuthInfoFunc the function used to verify auth info
-	VerifyAuthInfoFunc func(authInfo string, sess AuthSession) *tp.Rerror
+	VerifyAuthInfoFunc func(authInfo string, sess Session) *tp.Rerror
 	auth               struct {
 		generateAuthInfoFunc GenerateAuthInfoFunc
 		verifyAuthInfoFunc   VerifyAuthInfoFunc
@@ -86,7 +86,7 @@ func (a *auth) PostAccept(sess tp.PreSession) *tp.Rerror {
 		return nil
 	}
 	input, rerr := sess.Receive(func(header tp.Header) interface{} {
-		if header.Mtype() == tp.TypeCall && header.Uri() == authURI {
+		if header.Mtype() == tp.TypeCall && header.URI() == authURI {
 			return new(string)
 		}
 		return nil
@@ -95,11 +95,11 @@ func (a *auth) PostAccept(sess tp.PreSession) *tp.Rerror {
 		return rerr
 	}
 	authInfoPtr, ok := input.Body().(*string)
-	if !ok || input.Mtype() != tp.TypeCall || input.Uri() != authURI {
+	if !ok || input.Mtype() != tp.TypeCall || input.URI() != authURI {
 		rerr = tp.NewRerror(
 			tp.CodeUnauthorized,
 			tp.CodeText(tp.CodeUnauthorized),
-			fmt.Sprintf("the 1th package want: CALL %s, but have: %s %s", authURI, tp.TypeText(input.Mtype()), input.Uri()),
+			fmt.Sprintf("the 1th package want: CALL %s, but have: %s %s", authURI, tp.TypeText(input.Mtype()), input.URI()),
 		)
 	} else {
 		rerr = a.verifyAuthInfoFunc(*authInfoPtr, sess)

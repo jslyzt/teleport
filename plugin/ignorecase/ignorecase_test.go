@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/plugin/ignorecase"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/plugin/ignorecase"
 )
 
 type Home struct {

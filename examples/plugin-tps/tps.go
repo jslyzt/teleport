@@ -7,7 +7,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 func NewTPS(intervalSecond uint32) *TPS {
@@ -56,7 +56,7 @@ func (t *TPS) PostReg(h *tp.Handler) error {
 
 func (t *TPS) PostWriteReply(ctx tp.WriteCtx) *tp.Rerror {
 	t.once.Do(t.start)
-	atomic.AddUint32(t.stat[ctx.Output().UriObject().Path], 1)
+	atomic.AddUint32(t.stat[ctx.Output().URIObject().Path], 1)
 	return nil
 }
 

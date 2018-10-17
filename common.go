@@ -1,17 +1,3 @@
-// Copyright 2015-2018 HenryLee. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package tp
 
 import (
@@ -24,9 +10,9 @@ import (
 
 	"github.com/henrylee2cn/goutil"
 	"github.com/henrylee2cn/goutil/pool"
-	"github.com/henrylee2cn/teleport/codec"
-	"github.com/henrylee2cn/teleport/socket"
-	"github.com/henrylee2cn/teleport/utils"
+	"github.com/jslyzt/teleport/codec"
+	"github.com/jslyzt/teleport/socket"
+	"github.com/jslyzt/teleport/utils"
 )
 
 // Message types
@@ -141,8 +127,8 @@ func IsConnRerror(rerr *Rerror) bool {
 const (
 	// MetaRerror reply error metadata key
 	MetaRerror = "X-Reply-Error"
-	// MetaRealIp real IP metadata key
-	MetaRealIp = "X-Real-IP"
+	// MetaRealIP real IP metadata key
+	MetaRealIP = "X-Real-IP"
 	// MetaAcceptBodyCodec the key of body codec that the sender wishes to accept
 	MetaAcceptBodyCodec = "X-Accept-Body-Codec"
 )
@@ -156,9 +142,9 @@ func WithRerror(rerr *Rerror) MessageSetting {
 	return socket.WithAddMeta(MetaRerror, goutil.BytesToString(b))
 }
 
-// WithRealIp sets the real IP to metadata.
-func WithRealIp(ip string) MessageSetting {
-	return socket.WithAddMeta(MetaRealIp, ip)
+// WithRealIP sets the real IP to metadata.
+func WithRealIP(ip string) MessageSetting {
+	return socket.WithAddMeta(MetaRealIP, ip)
 }
 
 // WithAcceptBodyCodec sets the body codec that the sender wishes to accept.
@@ -224,15 +210,15 @@ var WithSeq = socket.WithSeq
 //  func WithMtype(mtype byte) MessageSetting
 var WithMtype = socket.WithMtype
 
-// WithUri sets the message URI string.
+// WithURI sets the message URI string.
 // NOTE: max len ≤ 65535!
-//  func WithUri(uri string) MessageSetting
-var WithUri = socket.WithUri
+//  func WithURI(uri string) MessageSetting
+var WithURI = socket.WithURI
 
-// WithUriObject sets the message URI object.
+// WithURIObject sets the message URI object.
 // NOTE: urlencoded URI max len ≤ 65535!
-//  func WithUriObject(uriObject *url.URL) MessageSetting
-var WithUriObject = socket.WithUriObject
+//  func WithURIObject(uriObject *url.URL) MessageSetting
+var WithURIObject = socket.WithURIObject
 
 // WithQuery sets the message URI query parameter.
 // NOTE: urlencoded URI max len ≤ 65535!
@@ -339,7 +325,7 @@ func NewFakeCallCmd(uri string, arg, result interface{}, rerr *Rerror) CallCmd {
 	return &fakeCallCmd{
 		output: socket.NewMessage(
 			socket.WithMtype(TypeCall),
-			socket.WithUri(uri),
+			socket.WithURI(uri),
 			socket.WithBody(arg),
 		),
 		result: result,
@@ -408,8 +394,8 @@ func (f *fakeCallCmd) CostTime() time.Duration {
 	return 0
 }
 
-// NewTlsConfigFromFile creates a new TLS config.
-func NewTlsConfigFromFile(tlsCertFile, tlsKeyFile string) (*tls.Config, error) {
+// NewTLSConfigFromFile creates a new TLS config.
+func NewTLSConfigFromFile(tlsCertFile, tlsKeyFile string) (*tls.Config, error) {
 	cert, err := tls.LoadX509KeyPair(tlsCertFile, tlsKeyFile)
 	if err != nil {
 		return nil, err

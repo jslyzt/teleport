@@ -1,17 +1,3 @@
-// Copyright 2015-2018 HenryLee. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package tp
 
 import (
@@ -27,7 +13,7 @@ import (
 	"github.com/henrylee2cn/goutil"
 	"github.com/henrylee2cn/goutil/coarsetime"
 	"github.com/henrylee2cn/goutil/errors"
-	"github.com/henrylee2cn/teleport/codec"
+	"github.com/jslyzt/teleport/codec"
 )
 
 type (
@@ -38,15 +24,15 @@ type (
 		// CountSession returns the number of sessions.
 		CountSession() int
 		// GetSession gets the session by id.
-		GetSession(sessionId string) (Session, bool)
+		GetSession(sessionID string) (Session, bool)
 		// RangeSession ranges all sessions. If fn returns false, stop traversing.
 		RangeSession(fn func(sess Session) bool)
-		// SetTlsConfig sets the TLS config.
-		SetTlsConfig(tlsConfig *tls.Config)
-		// SetTlsConfigFromFile sets the TLS config from file.
-		SetTlsConfigFromFile(tlsCertFile, tlsKeyFile string) error
-		// TlsConfig returns the TLS config.
-		TlsConfig() *tls.Config
+		// SetTLSConfig sets the TLS config.
+		SetTLSConfig(tlsConfig *tls.Config)
+		// SetTLSConfigFromFile sets the TLS config from file.
+		SetTLSConfigFromFile(tlsCertFile, tlsKeyFile string) error
+		// TLSConfig returns the TLS config.
+		TLSConfig() *tls.Config
 		// PluginContainer returns the global plugin container.
 		PluginContainer() *PluginContainer
 	}
@@ -177,26 +163,26 @@ func (p *peer) PluginContainer() *PluginContainer {
 	return p.pluginContainer
 }
 
-// TlsConfig returns the TLS config.
-func (p *peer) TlsConfig() *tls.Config {
+// TLSConfig returns the TLS config.
+func (p *peer) TLSConfig() *tls.Config {
 	return p.tlsConfig
 }
 
-// SetTlsConfig sets the TLS config.
-func (p *peer) SetTlsConfig(tlsConfig *tls.Config) {
+// SetTLSConfig sets the TLS config.
+func (p *peer) SetTLSConfig(tlsConfig *tls.Config) {
 	p.tlsConfig = tlsConfig
 }
 
-// SetTlsConfigFromFile sets the TLS config from file.
-func (p *peer) SetTlsConfigFromFile(tlsCertFile, tlsKeyFile string) error {
+// SetTLSConfigFromFile sets the TLS config from file.
+func (p *peer) SetTLSConfigFromFile(tlsCertFile, tlsKeyFile string) error {
 	var err error
-	p.tlsConfig, err = NewTlsConfigFromFile(tlsCertFile, tlsKeyFile)
+	p.tlsConfig, err = NewTLSConfigFromFile(tlsCertFile, tlsKeyFile)
 	return err
 }
 
 // GetSession gets the session by id.
-func (p *peer) GetSession(sessionId string) (Session, bool) {
-	return p.sessHub.Get(sessionId)
+func (p *peer) GetSession(sessionID string) (Session, bool) {
+	return p.sessHub.Get(sessionID)
 }
 
 // RangeSession ranges all sessions.
@@ -271,20 +257,20 @@ func (p *peer) newSessionForClient(dialFunc func() (net.Conn, error), addr strin
 				// }
 			}
 			if err != nil {
-				Errorf("redial fail (network:%s, addr:%s, id:%s): %s", p.network, sess.RemoteAddr().String(), sess.Id(), err.Error())
+				Errorf("redial fail (network:%s, addr:%s, id:%s): %s", p.network, sess.RemoteAddr().String(), sess.ID(), err.Error())
 			}
 			return false
 		}
 	}
 
-	sess.socket.SetId(sess.LocalAddr().String())
+	sess.socket.SetID(sess.LocalAddr().String())
 	if rerr := p.pluginContainer.postDial(sess); rerr != nil {
 		sess.Close()
 		return nil, rerr
 	}
 	AnywayGo(sess.startReadAndHandle)
 	p.sessHub.Set(sess)
-	Infof("dial ok (network:%s, addr:%s, id:%s)", p.network, sess.RemoteAddr().String(), sess.Id())
+	Infof("dial ok (network:%s, addr:%s, id:%s)", p.network, sess.RemoteAddr().String(), sess.ID())
 	return sess, nil
 }
 
@@ -296,14 +282,14 @@ func (p *peer) renewSessionForClient(sess *session, dialFunc func() (net.Conn, e
 	if p.tlsConfig != nil {
 		conn = tls.Client(conn, p.tlsConfig)
 	}
-	oldIp := sess.LocalAddr().String()
-	oldId := sess.Id()
+	oldIP := sess.LocalAddr().String()
+	oldID := sess.ID()
 	sess.conn = conn
 	sess.socket.Reset(conn, protoFuncs...)
-	if oldIp == oldId {
-		sess.socket.SetId(sess.LocalAddr().String())
+	if oldIP == oldID {
+		sess.socket.SetID(sess.LocalAddr().String())
 	} else {
-		sess.socket.SetId(oldId)
+		sess.socket.SetID(oldID)
 	}
 	if rerr := p.pluginContainer.postDial(sess); rerr != nil {
 		sess.Close()
@@ -312,7 +298,7 @@ func (p *peer) renewSessionForClient(sess *session, dialFunc func() (net.Conn, e
 	atomic.StoreInt32(&sess.status, statusOk)
 	AnywayGo(sess.startReadAndHandle)
 	p.sessHub.Set(sess)
-	Infof("redial ok (network:%s, addr:%s, id:%s)", p.network, sess.RemoteAddr().String(), sess.Id())
+	Infof("redial ok (network:%s, addr:%s, id:%s)", p.network, sess.RemoteAddr().String(), sess.ID())
 	return nil
 }
 
@@ -330,7 +316,7 @@ func (p *peer) ServeConn(conn net.Conn, protoFunc ...ProtoFunc) (Session, error)
 		sess.Close()
 		return nil, rerr.ToError()
 	}
-	Infof("serve ok (network:%s, addr:%s, id:%s)", network, sess.RemoteAddr().String(), sess.Id())
+	Infof("serve ok (network:%s, addr:%s, id:%s)", network, sess.RemoteAddr().String(), sess.ID())
 	p.sessHub.Set(sess)
 	AnywayGo(sess.startReadAndHandle)
 	return sess, nil
@@ -399,7 +385,7 @@ func (p *peer) ServeListener(lis net.Listener, protoFunc ...ProtoFunc) error {
 				sess.Close()
 				return
 			}
-			Infof("accept ok (network:%s, addr:%s, id:%s)", network, sess.RemoteAddr().String(), sess.Id())
+			Infof("accept ok (network:%s, addr:%s, id:%s)", network, sess.RemoteAddr().String(), sess.ID())
 			p.sessHub.Set(sess)
 			sess.startReadAndHandle()
 		})

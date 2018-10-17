@@ -1,17 +1,3 @@
-// Copyright 2017 HenryLee. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package socket
 
 import (
@@ -35,11 +21,11 @@ func NewSocketHub() *SocketHub {
 
 // Set sets a Socket.
 func (sh *SocketHub) Set(socket Socket) {
-	_socket, loaded := sh.sockets.LoadOrStore(socket.Id(), socket)
+	_socket, loaded := sh.sockets.LoadOrStore(socket.ID(), socket)
 	if !loaded {
 		return
 	}
-	sh.sockets.Store(socket.Id(), socket)
+	sh.sockets.Store(socket.ID(), socket)
 	if oldSocket := _socket.(Socket); socket != oldSocket {
 		oldSocket.Close()
 	}
@@ -84,13 +70,13 @@ func (sh *SocketHub) Delete(id string) {
 	sh.sockets.Delete(id)
 }
 
-// ChangeId changes the socket id.
+// ChangeID changes the socket id.
 // Note: if the old id is remoteAddr, won't delete the index from socketHub.
-func (sh *SocketHub) ChangeId(newId string, socket Socket) {
-	oldId := socket.Id()
-	socket.SetId(newId)
+func (sh *SocketHub) ChangeID(newID string, socket Socket) {
+	oldID := socket.ID()
+	socket.SetID(newID)
 	sh.Set(socket)
-	if oldId != socket.RemoteAddr().String() {
-		sh.Delete(oldId)
+	if oldID != socket.RemoteAddr().String() {
+		sh.Delete(oldID)
 	}
 }

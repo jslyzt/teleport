@@ -26,8 +26,8 @@ import (
 	"github.com/tidwall/gjson"
 
 	"github.com/henrylee2cn/goutil"
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/utils"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/utils"
 )
 
 // NewJsonProtoFunc is creation function of JSON socket protocol.
@@ -68,7 +68,7 @@ func (j *jsonproto) Pack(m *tp.Message) error {
 	var s = fmt.Sprintf(format,
 		m.Seq(),
 		m.Mtype(),
-		m.Uri(),
+		m.URI(),
 		m.Meta().QueryString(),
 		m.BodyCodec(),
 		bytes.Replace(bodyBytes, []byte{'"'}, []byte{'\\', '"'}, -1),
@@ -139,7 +139,7 @@ func (j *jsonproto) Unpack(m *tp.Message) error {
 	// read other
 	m.SetSeq(gjson.Get(s, "seq").String())
 	m.SetMtype(byte(gjson.Get(s, "mtype").Int()))
-	m.SetUri(gjson.Get(s, "uri").String())
+	m.SetURI(gjson.Get(s, "uri").String())
 	meta := gjson.Get(s, "meta").String()
 	m.Meta().ParseBytes(goutil.StringToBytes(meta))
 

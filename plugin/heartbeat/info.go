@@ -47,6 +47,7 @@ func (h *heartbeatInfo) elemCopy() heartbeatInfo {
 	h.mu.RUnlock()
 	return copy
 }
+
 func (h *heartbeatInfo) getRate() time.Duration {
 	h.mu.RLock()
 	rate := h.rate

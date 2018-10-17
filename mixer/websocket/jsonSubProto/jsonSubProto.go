@@ -10,12 +10,12 @@ import (
 	"sync"
 
 	"github.com/henrylee2cn/goutil"
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 	"github.com/tidwall/gjson"
 )
 
-// NewJsonSubProtoFunc is creation function of JSON socket protocol.
-var NewJsonSubProtoFunc = func(rw io.ReadWriter) tp.Proto {
+// NewJSONSubProtoFunc is creation function of JSON socket protocol.
+var NewJSONSubProtoFunc = func(rw io.ReadWriter) tp.Proto {
 	return &jsonSubProto{
 		id:   'j',
 		name: "json",
@@ -64,7 +64,7 @@ func (j *jsonSubProto) Pack(m *tp.Message) error {
 	s := fmt.Sprintf(format,
 		m.Seq(),
 		m.Mtype(),
-		m.Uri(),
+		m.URI(),
 		m.Meta().QueryString(),
 		m.BodyCodec(),
 		bytes.Replace(bodyBytes, []byte{'"'}, []byte{'\\', '"'}, -1),
@@ -110,7 +110,7 @@ func (j *jsonSubProto) Unpack(m *tp.Message) error {
 	// read other
 	m.SetSeq(gjson.Get(s, "seq").String())
 	m.SetMtype(byte(gjson.Get(s, "mtype").Int()))
-	m.SetUri(gjson.Get(s, "uri").String())
+	m.SetURI(gjson.Get(s, "uri").String())
 	meta := gjson.Get(s, "meta").String()
 	m.Meta().ParseBytes(goutil.StringToBytes(meta))
 

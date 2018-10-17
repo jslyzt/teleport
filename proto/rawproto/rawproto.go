@@ -1,7 +1,7 @@
 package rawproto
 
 import (
-	"github.com/henrylee2cn/teleport/socket"
+	"github.com/jslyzt/teleport/socket"
 )
 
 /*

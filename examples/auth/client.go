@@ -1,8 +1,8 @@
 package main
 
 import (
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/plugin/auth"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/plugin/auth"
 )
 
 func main() {

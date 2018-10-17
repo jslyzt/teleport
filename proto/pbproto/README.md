@@ -13,7 +13,7 @@ pbproto is implemented PTOTOBUF socket communication protocol.
 
 ### Usage
 
-`import "github.com/henrylee2cn/teleport/proto/pbproto"`
+`import "github.com/jslyzt/teleport/proto/pbproto"`
 
 #### Test
 
@@ -24,9 +24,9 @@ import (
 	"testing"
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/proto/pbproto"
-	"github.com/henrylee2cn/teleport/xfer/gzip"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/proto/pbproto"
+	"github.com/jslyzt/teleport/xfer/gzip"
 )
 
 type Home struct {

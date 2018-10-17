@@ -1,17 +1,3 @@
-// Copyright 2015-2018 HenryLee. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package tp
 
 import (
@@ -27,9 +13,9 @@ import (
 
 	"github.com/henrylee2cn/goutil"
 	"github.com/henrylee2cn/goutil/coarsetime"
-	"github.com/henrylee2cn/teleport/codec"
-	"github.com/henrylee2cn/teleport/socket"
-	"github.com/henrylee2cn/teleport/utils"
+	"github.com/jslyzt/teleport/codec"
+	"github.com/jslyzt/teleport/socket"
+	"github.com/jslyzt/teleport/utils"
 )
 
 type (
@@ -43,8 +29,8 @@ type (
 		RemoteAddr() net.Addr
 		// Swap returns custom data swap of the session(socket).
 		Swap() goutil.Map
-		// SetId sets the session id.
-		SetId(newId string)
+		// SetID sets the session id.
+		SetID(newID string)
 		// ControlFD invokes f on the underlying connection's file
 		// descriptor or handle.
 		// The file descriptor fd is guaranteed to remain valid while
@@ -79,7 +65,7 @@ type (
 	// BaseSession a connection session with the common method set.
 	BaseSession interface {
 		// Id returns the session id.
-		Id() string
+		ID() string
 		// Peer returns the peer.
 		Peer() Peer
 		// LocalAddr returns the local network address.
@@ -92,8 +78,8 @@ type (
 	// Session a connection session.
 	Session interface {
 		BaseSession
-		// SetId sets the session id.
-		SetId(newId string)
+		// SetID sets the session id.
+		SetID(newID string)
 		// Close closes the session.
 		Close() error
 		// CloseNotify returns a channel that closes when the connection has gone away.
@@ -184,21 +170,21 @@ func (s *session) Peer() Peer {
 }
 
 // Id returns the session id.
-func (s *session) Id() string {
-	return s.socket.Id()
+func (s *session) ID() string {
+	return s.socket.ID()
 }
 
-// SetId sets the session id.
-func (s *session) SetId(newId string) {
-	oldId := s.Id()
-	if oldId == newId {
+// SetID sets the session id.
+func (s *session) SetID(newID string) {
+	oldID := s.ID()
+	if oldID == newID {
 		return
 	}
-	s.socket.SetId(newId)
+	s.socket.SetID(newID)
 	hub := s.peer.sessHub
 	hub.Set(s)
-	hub.Delete(oldId)
-	Tracef("session changes id: %s -> %s", oldId, newId)
+	hub.Delete(oldID)
+	Tracef("session changes id: %s -> %s", oldID, newID)
 }
 
 // ControlFD invokes f on the underlying connection's file
@@ -243,7 +229,7 @@ func (s *session) ModifySocket(fn func(conn net.Conn) (modifiedConn net.Conn, ne
 	var (
 		pub   goutil.Map
 		count = s.socket.SwapLen()
-		id    = s.Id()
+		id    = s.ID()
 	)
 	if count > 0 {
 		pub = s.socket.Swap()
@@ -256,7 +242,7 @@ func (s *session) ModifySocket(fn func(conn net.Conn) (modifiedConn net.Conn, ne
 			return true
 		})
 	}
-	s.socket.SetId(id)
+	s.socket.SetID(id)
 }
 
 // GetProtoFunc returns the ProtoFunc
@@ -335,7 +321,7 @@ func (s *session) Send(uri string, body interface{}, rerr *Rerror, setting ...Me
 		output.SetBodyCodec(s.peer.defaultBodyCodec)
 	}
 	if len(uri) > 0 {
-		output.SetUri(uri)
+		output.SetURI(uri)
 	}
 	if body != nil {
 		output.SetBody(body)
@@ -344,8 +330,11 @@ func (s *session) Send(uri string, body interface{}, rerr *Rerror, setting ...Me
 		rerr.SetToMeta(output.Meta())
 	}
 	if age := s.ContextAge(); age > 0 {
-		ctxTimout, _ := context.WithTimeout(output.Context(), age)
+		ctxTimout, cb := context.WithTimeout(output.Context(), age)
 		socket.WithContext(ctxTimout)(output)
+		if cb != nil {
+			cb()
+		}
 	}
 	_, replyErr = s.write(output)
 	socket.PutMessage(output)
@@ -367,8 +356,11 @@ func (s *session) Receive(newBodyFunc NewBodyFunc, setting ...MessageSetting) (i
 	input.SetNewBody(newBodyFunc)
 
 	if age := s.ContextAge(); age > 0 {
-		ctxTimout, _ := context.WithTimeout(input.Context(), age)
+		ctxTimout, cb := context.WithTimeout(input.Context(), age)
 		socket.WithContext(ctxTimout)(input)
+		if cb != nil {
+			cb()
+		}
 	}
 	deadline, _ := input.Context().Deadline()
 	s.socket.SetReadDeadline(deadline)
@@ -406,7 +398,7 @@ func (s *session) AsyncCall(
 	}
 	output := socket.NewMessage(
 		socket.WithMtype(TypeCall),
-		socket.WithUri(uri),
+		socket.WithURI(uri),
 		socket.WithBody(arg),
 	)
 	for _, fn := range setting {
@@ -428,8 +420,11 @@ func (s *session) AsyncCall(
 		output.SetBodyCodec(s.peer.defaultBodyCodec)
 	}
 	if age := s.ContextAge(); age > 0 {
-		ctxTimout, _ := context.WithTimeout(output.Context(), age)
+		ctxTimout, cb := context.WithTimeout(output.Context(), age)
 		socket.WithContext(ctxTimout)(output)
+		if cb != nil {
+			cb()
+		}
 	}
 
 	cmd := &callCmd{
@@ -501,7 +496,7 @@ func (s *session) Push(uri string, arg interface{}, setting ...MessageSetting) *
 	ctx.start = s.peer.timeNow()
 	output := ctx.output
 	output.SetMtype(TypePush)
-	output.SetUri(uri)
+	output.SetURI(uri)
 	output.SetBody(arg)
 
 	for _, fn := range setting {
@@ -521,8 +516,11 @@ func (s *session) Push(uri string, arg interface{}, setting ...MessageSetting) *
 		output.SetBodyCodec(s.peer.defaultBodyCodec)
 	}
 	if age := s.ContextAge(); age > 0 {
-		ctxTimout, _ := context.WithTimeout(output.Context(), age)
+		ctxTimout, cb := context.WithTimeout(output.Context(), age)
 		socket.WithContext(ctxTimout)(output)
+		if cb != nil {
+			cb()
+		}
 	}
 
 	defer func() {
@@ -638,7 +636,7 @@ func (s *session) Close() error {
 	s.activelyClosing()
 	s.statusLock.Unlock()
 
-	s.peer.sessHub.Delete(s.Id())
+	s.peer.sessHub.Delete(s.ID())
 	s.notifyClosed()
 
 	s.graceCtxWaitGroup.Wait()
@@ -669,7 +667,7 @@ func (s *session) readDisconnected(oldConn net.Conn, err error) {
 	s.passivelyClosed()
 	s.statusLock.Unlock()
 
-	s.peer.sessHub.Delete(s.Id())
+	s.peer.sessHub.Delete(s.ID())
 	s.notifyClosed()
 
 	if err != nil && err != io.EOF && err != socket.ErrProactivelyCloseSocket {
@@ -716,8 +714,11 @@ func (s *session) startReadAndHandle() {
 	var withContext MessageSetting
 	if readTimeout := s.SessionAge(); readTimeout > 0 {
 		s.socket.SetReadDeadline(coarsetime.CeilingTimeNow().Add(readTimeout))
-		ctxTimout, _ := context.WithTimeout(context.Background(), readTimeout)
+		ctxTimout, cb := context.WithTimeout(context.Background(), readTimeout)
 		withContext = socket.WithContext(ctxTimout)
+		if cb != nil {
+			cb()
+		}
 	} else {
 		s.socket.SetReadDeadline(time.Time{})
 		withContext = socket.WithContext(nil)
@@ -827,11 +828,11 @@ func newSessionHub() *SessionHub {
 
 // Set sets a *session.
 func (sh *SessionHub) Set(sess *session) {
-	_sess, loaded := sh.sessions.LoadOrStore(sess.Id(), sess)
+	_sess, loaded := sh.sessions.LoadOrStore(sess.ID(), sess)
 	if !loaded {
 		return
 	}
-	sh.sessions.Store(sess.Id(), sess)
+	sh.sessions.Store(sess.ID(), sess)
 	if oldSess := _sess.(*session); sess != oldSess {
 		oldSess.Close()
 	}
@@ -890,13 +891,13 @@ const (
 	logFormatCallHandle = "CALL<- %s %s %s %q RECV(%s) SEND(%s)"
 )
 
-func (s *session) runlog(realIp string, costTime time.Duration, input, output *Message, logType int8) {
+func (s *session) runlog(realIP string, costTime time.Duration, input, output *Message, logType int8) {
 	if GetLoggerLevel() < WARNING {
 		return
 	}
 	var addr = s.RemoteAddr().String()
-	if realIp != "" && realIp != addr {
-		addr += "(real: " + realIp + ")"
+	if realIP != "" && realIP != addr {
+		addr += "(real: " + realIP + ")"
 	}
 	var (
 		costTimeStr string
@@ -921,13 +922,13 @@ func (s *session) runlog(realIp string, costTime time.Duration, input, output *M
 
 	switch logType {
 	case typePushLaunch:
-		printFunc(logFormatPushLaunch, addr, costTimeStr, output.Uri(), output.Seq(), messageLogBytes(output, s.peer.printDetail))
+		printFunc(logFormatPushLaunch, addr, costTimeStr, output.URI(), output.Seq(), messageLogBytes(output, s.peer.printDetail))
 	case typePushHandle:
-		printFunc(logFormatPushHandle, addr, costTimeStr, input.Uri(), input.Seq(), messageLogBytes(input, s.peer.printDetail))
+		printFunc(logFormatPushHandle, addr, costTimeStr, input.URI(), input.Seq(), messageLogBytes(input, s.peer.printDetail))
 	case typeCallLaunch:
-		printFunc(logFormatCallLaunch, addr, costTimeStr, output.Uri(), output.Seq(), messageLogBytes(output, s.peer.printDetail), messageLogBytes(input, s.peer.printDetail))
+		printFunc(logFormatCallLaunch, addr, costTimeStr, output.URI(), output.Seq(), messageLogBytes(output, s.peer.printDetail), messageLogBytes(input, s.peer.printDetail))
 	case typeCallHandle:
-		printFunc(logFormatCallHandle, addr, costTimeStr, input.Uri(), input.Seq(), messageLogBytes(input, s.peer.printDetail), messageLogBytes(output, s.peer.printDetail))
+		printFunc(logFormatCallHandle, addr, costTimeStr, input.URI(), input.Seq(), messageLogBytes(input, s.peer.printDetail), messageLogBytes(output, s.peer.printDetail))
 	}
 }
 

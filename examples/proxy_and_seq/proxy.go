@@ -3,8 +3,8 @@ package main
 import (
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/plugin/proxy"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/plugin/proxy"
 )
 
 func main() {

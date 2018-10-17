@@ -1,8 +1,8 @@
 package main
 
 import (
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/plugin/auth"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/plugin/auth"
 )
 
 func main() {
@@ -22,7 +22,7 @@ const (
 	detailAuthFail = "auth fail detail"
 )
 
-func verifyAuthInfo(authInfo string, sess auth.AuthSession) *tp.Rerror {
+func verifyAuthInfo(authInfo string, sess auth.Session) *tp.Rerror {
 	tp.Infof("auth info: %v", authInfo)
 	if clientAuthInfo != authInfo {
 		return tp.NewRerror(codeAuthFail, textAuthFail, detailAuthFail)

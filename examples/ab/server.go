@@ -5,9 +5,9 @@ import (
 	// _ "net/http/pprof"
 	"time"
 
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/proto/pbproto"
-	"github.com/henrylee2cn/teleport/socket/example/pb"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/proto/pbproto"
+	"github.com/jslyzt/teleport/socket/example/pb"
 )
 
 func main() {

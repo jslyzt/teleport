@@ -1,19 +1,3 @@
-// Package socket provides a concise, powerful and high-performance TCP.
-//
-// Copyright 2017 HenryLee. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
 package socket
 
 import (
@@ -92,9 +76,9 @@ type (
 		// SwapLen returns the amount of custom data of the socket.
 		SwapLen() int
 		// Id returns the socket id.
-		Id() string
-		// SetId sets the socket id.
-		SetId(string)
+		ID() string
+		// SetID sets the socket id.
+		SetID(string)
 		// Reset reset net.Conn and ProtoFunc.
 		Reset(netConn net.Conn, protoFunc ...ProtoFunc)
 	}
@@ -233,8 +217,8 @@ func (s *socket) SwapLen() int {
 	return s.swap.Len()
 }
 
-// Id returns the socket id.
-func (s *socket) Id() string {
+// ID returns the socket id.
+func (s *socket) ID() string {
 	s.idMutex.RLock()
 	id := s.id
 	if len(id) == 0 {
@@ -244,8 +228,8 @@ func (s *socket) Id() string {
 	return id
 }
 
-// SetId sets the socket id.
-func (s *socket) SetId(id string) {
+// SetID sets the socket id.
+func (s *socket) SetID(id string) {
 	s.idMutex.Lock()
 	s.id = id
 	s.idMutex.Unlock()
@@ -262,7 +246,7 @@ func (s *socket) Reset(netConn net.Conn, protoFunc ...ProtoFunc) {
 	s.readerWithBuffer.Discard(s.readerWithBuffer.Buffered())
 	s.readerWithBuffer.Reset(netConn)
 	s.protocol = getProto(protoFunc, s)
-	s.SetId("")
+	s.SetID("")
 	atomic.StoreInt32(&s.curState, normal)
 	s.optimize()
 	s.mu.Unlock()

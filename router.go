@@ -1,17 +1,3 @@
-// Copyright 2015-2018 HenryLee. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package tp
 
 import (
@@ -483,7 +469,7 @@ func makeCallHandlersFromStruct(pathPrefix string, callCtrlStruct interface{}, p
 		}
 
 		handlers = append(handlers, &Handler{
-			name:            path.Join(pathPrefix, ToUriPath(ctrlStructName(ctype)), ToUriPath(mname)),
+			name:            path.Join(pathPrefix, ToURIPath(ctrlStructName(ctype)), ToURIPath(mname)),
 			handleFunc:      handleFunc,
 			argElem:         argType.Elem(),
 			reply:           replyType,
@@ -608,7 +594,7 @@ func makeCallHandlersFromFunc(pathPrefix string, callHandleFunc interface{}, plu
 		pluginContainer = newPluginContainer()
 	}
 	return []*Handler{&Handler{
-		name:            path.Join(pathPrefix, ToUriPath(handlerFuncName(cValue))),
+		name:            path.Join(pathPrefix, ToURIPath(handlerFuncName(cValue))),
 		handleFunc:      handleFunc,
 		argElem:         argType.Elem(),
 		reply:           replyType,
@@ -721,7 +707,7 @@ func makePushHandlersFromStruct(pathPrefix string, pushCtrlStruct interface{}, p
 			pool.Put(obj)
 		}
 		handlers = append(handlers, &Handler{
-			name:            path.Join(pathPrefix, ToUriPath(ctrlStructName(ctype)), ToUriPath(mname)),
+			name:            path.Join(pathPrefix, ToURIPath(ctrlStructName(ctype)), ToURIPath(mname)),
 			handleFunc:      handleFunc,
 			argElem:         argType.Elem(),
 			pluginContainer: pluginContainer,
@@ -827,7 +813,7 @@ func makePushHandlersFromFunc(pathPrefix string, pushHandleFunc interface{}, plu
 		pluginContainer = newPluginContainer()
 	}
 	return []*Handler{&Handler{
-		name:            path.Join(pathPrefix, ToUriPath(handlerFuncName(cValue))),
+		name:            path.Join(pathPrefix, ToURIPath(handlerFuncName(cValue))),
 		handleFunc:      handleFunc,
 		argElem:         argType.Elem(),
 		pluginContainer: pluginContainer,
@@ -877,8 +863,8 @@ func objectName(v reflect.Value) string {
 	return t.String()
 }
 
-// ToUriPath maps struct(func) name to URI path.
-func ToUriPath(name string) string {
+// ToURIPath maps struct(func) name to URI path.
+func ToURIPath(name string) string {
 	p := strings.Replace(name, "__", ".", -1)
 	a := strings.Split(p, "_")
 	for k, v := range a {

@@ -23,7 +23,7 @@ const _ = proto.GoGoProtoPackageIsVersion2 // please upgrade the proto package
 type Format struct {
 	Seq       string `protobuf:"bytes,1,opt,name=seq,proto3" json:"seq,omitempty"`
 	Mtype     int32  `protobuf:"varint,2,opt,name=mtype,proto3" json:"mtype,omitempty"`
-	Uri       string `protobuf:"bytes,3,opt,name=uri,proto3" json:"uri,omitempty"`
+	URI       string `protobuf:"bytes,3,opt,name=uri,proto3" json:"uri,omitempty"`
 	Meta      []byte `protobuf:"bytes,4,opt,name=meta,proto3" json:"meta,omitempty"`
 	BodyCodec int32  `protobuf:"varint,5,opt,name=body_codec,json=bodyCodec,proto3" json:"body_codec,omitempty"`
 	Body      []byte `protobuf:"bytes,6,opt,name=body,proto3" json:"body,omitempty"`
@@ -77,9 +77,9 @@ func (m *Format) GetMtype() int32 {
 	return 0
 }
 
-func (m *Format) GetUri() string {
+func (m *Format) GetURI() string {
 	if m != nil {
-		return m.Uri
+		return m.URI
 	}
 	return ""
 }
@@ -141,11 +141,11 @@ func (m *Format) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintFormat(dAtA, i, uint64(m.Mtype))
 	}
-	if len(m.Uri) > 0 {
+	if len(m.URI) > 0 {
 		dAtA[i] = 0x1a
 		i++
-		i = encodeVarintFormat(dAtA, i, uint64(len(m.Uri)))
-		i += copy(dAtA[i:], m.Uri)
+		i = encodeVarintFormat(dAtA, i, uint64(len(m.URI)))
+		i += copy(dAtA[i:], m.URI)
 	}
 	if len(m.Meta) > 0 {
 		dAtA[i] = 0x22
@@ -195,7 +195,7 @@ func (m *Format) Size() (n int) {
 	if m.Mtype != 0 {
 		n += 1 + sovFormat(uint64(m.Mtype))
 	}
-	l = len(m.Uri)
+	l = len(m.URI)
 	if l > 0 {
 		n += 1 + l + sovFormat(uint64(l))
 	}
@@ -309,7 +309,7 @@ func (m *Format) Unmarshal(dAtA []byte) error {
 			}
 		case 3:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Uri", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field URI", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -334,7 +334,7 @@ func (m *Format) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Uri = string(dAtA[iNdEx:postIndex])
+			m.URI = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 4:
 			if wireType != 2 {

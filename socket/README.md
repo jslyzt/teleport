@@ -46,15 +46,15 @@ A concise, powerful and high-performance connection socket.
 
 - Profile torch of teleport/socket
 
-![tp_socket_profile_torch](https://github.com/henrylee2cn/teleport/raw/v4/doc/tp_socket_profile_torch.png)
+![tp_socket_profile_torch](https://github.com/jslyzt/teleport/raw/v4/doc/tp_socket_profile_torch.png)
 
-**[svg file](https://github.com/henrylee2cn/teleport/raw/v4/doc/tp_socket_profile_torch.svg)**
+**[svg file](https://github.com/jslyzt/teleport/raw/v4/doc/tp_socket_profile_torch.svg)**
 
 - Heap torch of teleport/socket
 
-![tp_socket_heap_torch](https://github.com/henrylee2cn/teleport/raw/v4/doc/tp_socket_heap_torch.png)
+![tp_socket_heap_torch](https://github.com/jslyzt/teleport/raw/v4/doc/tp_socket_heap_torch.png)
 
-**[svg file](https://github.com/henrylee2cn/teleport/raw/v4/doc/tp_socket_heap_torch.svg)**
+**[svg file](https://github.com/jslyzt/teleport/raw/v4/doc/tp_socket_heap_torch.svg)**
 
 ## Example
 
@@ -67,8 +67,8 @@ import (
 	"log"
 	"net"
 
-	"github.com/henrylee2cn/teleport/socket"
-	"github.com/henrylee2cn/teleport/socket/example/pb"
+	"github.com/jslyzt/teleport/socket"
+	"github.com/jslyzt/teleport/socket/example/pb"
 )
 
 func main() {
@@ -130,10 +130,10 @@ import (
 	"log"
 	"net"
 
-	"github.com/henrylee2cn/teleport/codec"
-	"github.com/henrylee2cn/teleport/socket"
+	"github.com/jslyzt/teleport/codec"
+	"github.com/jslyzt/teleport/socket"
 
-	"github.com/henrylee2cn/teleport/socket/example/pb"
+	"github.com/jslyzt/teleport/socket/example/pb"
 )
 
 func main() {
@@ -151,7 +151,7 @@ func main() {
 		message.SetMtype(0)
 		message.SetBodyCodec(codec.ID_JSON)
 		message.SetSeq(i)
-		message.SetUri("/a/b")
+		message.SetURI("/a/b")
 		message.SetBody(&pb.PbTest{A: 10, B: 2})
 		err = s.WriteMessage(message)
 		if err != nil {
@@ -176,7 +176,7 @@ func main() {
 }
 ```
 
-[More Examples](https://github.com/henrylee2cn/teleport/tree/v4/socket/example)
+[More Examples](https://github.com/jslyzt/teleport/tree/v4/socket/example)
 
 ## Keyworks
 
@@ -215,13 +215,13 @@ type (
 	func (m *Message) SetMtype(mtype byte)
 	func (m *Message) SetSeq(seq string)
 	func (m *Message) SetSize(size uint32) error
-	func (m *Message) SetUri(uri string)
-	func (m *Message) SetUriObject(uriObject *url.URL)
+	func (m *Message) SetURI(uri string)
+	func (m *Message) SetURIObject(uriObject *url.URL)
 	func (m *Message) Size() uint32
 	func (m *Message) String() string
 	func (m *Message) UnmarshalBody(bodyBytes []byte) error
-	func (m *Message) Uri() string
-	func (m *Message) UriObject() *url.URL
+	func (m *Message) URI() string
+	func (m *Message) URIObject() *url.URL
 	func (m *Message) XferPipe() *xfer.XferPipe
 
 	// NewBodyFunc creates a new body by header.

@@ -8,9 +8,9 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/henrylee2cn/teleport/codec"
-	"github.com/henrylee2cn/teleport/socket"
-	"github.com/henrylee2cn/teleport/socket/example/pb"
+	"github.com/jslyzt/teleport/codec"
+	"github.com/jslyzt/teleport/socket"
+	"github.com/jslyzt/teleport/socket/example/pb"
 )
 
 func main() {
@@ -46,7 +46,7 @@ func main() {
 				message.Reset()
 				message.SetBodyCodec(codec.ID_PROTOBUF)
 				message.SetSeq(strconv.Itoa(a))
-				message.SetUri("/a/b")
+				message.SetURI("/a/b")
 				message.SetBody(&pb.PbTest{A: 10, B: 2})
 				err = s.WriteMessage(message)
 				if err != nil {

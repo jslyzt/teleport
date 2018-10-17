@@ -20,7 +20,7 @@ import (
 	"time"
 
 	"github.com/henrylee2cn/goutil/coarsetime"
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 // NewPong returns a heartbeat receiver plugin.
@@ -111,7 +111,7 @@ func (h *heartPong) PostWritePush(ctx tp.WriteCtx) *tp.Rerror {
 }
 
 func (h *heartPong) update(ctx tp.ReadCtx) {
-	if ctx.Path() == HeartbeatUri {
+	if ctx.Path() == HeartbeatURI {
 		return
 	}
 	sess := ctx.Session()
@@ -145,9 +145,9 @@ func handelHeartbeat(sess tp.Session, query url.Values) *tp.Rerror {
 		return tp.NewRerror(tp.CodeBadMessage, "Invalid Heartbeat Rate", rateStr)
 	}
 	if rateSecond == 0 {
-		tp.Tracef("heart-pong: %s", sess.Id())
+		tp.Tracef("heart-pong: %s", sess.ID())
 	} else {
-		tp.Tracef("heart-pong: %s, set rate: %ds", sess.Id(), rateSecond)
+		tp.Tracef("heart-pong: %s, set rate: %ds", sess.ID(), rateSecond)
 	}
 	return nil
 }

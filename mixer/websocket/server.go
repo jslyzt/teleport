@@ -18,15 +18,15 @@ import (
 	"net/http"
 	"net/url"
 
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/mixer/websocket/jsonSubProto"
-	"github.com/henrylee2cn/teleport/mixer/websocket/pbSubProto"
-	ws "github.com/henrylee2cn/teleport/mixer/websocket/websocket"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/mixer/websocket/jsonSubProto"
+	"github.com/jslyzt/teleport/mixer/websocket/pbSubProto"
+	ws "github.com/jslyzt/teleport/mixer/websocket/websocket"
 )
 
-// NewJsonServeHandler creates a websocket json handler.
-func NewJsonServeHandler(peer tp.Peer, handshake func(*ws.Config, *http.Request) error) http.Handler {
-	return NewServeHandler(peer, handshake, jsonSubProto.NewJsonSubProtoFunc)
+// NewJSONServeHandler creates a websocket json handler.
+func NewJSONServeHandler(peer tp.Peer, handshake func(*ws.Config, *http.Request) error) http.Handler {
+	return NewServeHandler(peer, handshake, jsonSubProto.NewJSONSubProtoFunc)
 }
 
 // NewPbServeHandler creates a websocket protobuf handler.
@@ -42,7 +42,7 @@ func NewServeHandler(peer tp.Peer, handshake func(*ws.Config, *http.Request) err
 		protoFunc: NewWsProtoFunc(protoFunc...),
 	}
 	var scheme string
-	if peer.TlsConfig() == nil {
+	if peer.TLSConfig() == nil {
 		scheme = "ws"
 	} else {
 		scheme = "wss"
@@ -66,7 +66,7 @@ func NewServeHandler(peer tp.Peer, handshake func(*ws.Config, *http.Request) err
 	}
 	w.Server.Handler = w.handler
 	w.Server.Config = ws.Config{
-		TlsConfig: peer.TlsConfig(),
+		TlsConfig: peer.TLSConfig(),
 	}
 	return w
 }

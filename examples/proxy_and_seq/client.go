@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/henrylee2cn/goutil"
-	tp "github.com/henrylee2cn/teleport"
-	"github.com/henrylee2cn/teleport/socket"
+	tp "github.com/jslyzt/teleport"
+	"github.com/jslyzt/teleport/socket"
 )
 
 func main() {

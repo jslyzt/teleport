@@ -1,7 +1,7 @@
 package main
 
 import (
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 func main() {
@@ -22,10 +22,10 @@ func (e *earlyResult) Name() string {
 }
 
 func (e *earlyResult) PostAccept(sess tp.PreSession) *tp.Rerror {
-	var rigthUri bool
+	var rigthURI bool
 	input, rerr := sess.Receive(func(header Header) interface{} {
-		if header.Uri() == "/early/ping" {
-			rigthUri = true
+		if header.URI() == "/early/ping" {
+			rigthURI = true
 			return new(map[string]string)
 		}
 		return nil
@@ -35,7 +35,7 @@ func (e *earlyResult) PostAccept(sess tp.PreSession) *tp.Rerror {
 	}
 
 	var result string
-	if !rigthUri {
+	if !rigthURI {
 		rerr = tp.NewRerror(10005, "unexpected request", "")
 	} else {
 		body := *input.Body().(*map[string]string)

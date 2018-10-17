@@ -4,7 +4,7 @@ package ignorecase
 import (
 	"strings"
 
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 // NewIgnoreCase Returns a ignoreCase plugin.
@@ -25,12 +25,12 @@ func (i *ignoreCase) Name() string {
 
 func (i *ignoreCase) PostReadCallHeader(ctx tp.ReadCtx) *tp.Rerror {
 	// Dynamic transformation path is lowercase
-	ctx.UriObject().Path = strings.ToLower(ctx.UriObject().Path)
+	ctx.URIObject().Path = strings.ToLower(ctx.URIObject().Path)
 	return nil
 }
 
 func (i *ignoreCase) PostReadPushHeader(ctx tp.ReadCtx) *tp.Rerror {
 	// Dynamic transformation path is lowercase
-	ctx.UriObject().Path = strings.ToLower(ctx.UriObject().Path)
+	ctx.URIObject().Path = strings.ToLower(ctx.URIObject().Path)
 	return nil
 }

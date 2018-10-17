@@ -1,7 +1,7 @@
 package main
 
 import (
-	tp "github.com/henrylee2cn/teleport"
+	tp "github.com/jslyzt/teleport"
 )
 
 func main() {
@@ -37,10 +37,10 @@ func (e *earlyCall) PostDial(sess tp.PreSession) *tp.Rerror {
 	}
 
 	input, rerr := sess.Receive(func(header Header) interface{} {
-		if header.Uri() == "/early/pong" {
+		if header.URI() == "/early/pong" {
 			return new(string)
 		}
-		tp.Panicf("Received an unexpected response: %s", header.Uri())
+		tp.Panicf("Received an unexpected response: %s", header.URI())
 		return nil
 	})
 	if rerr != nil {
